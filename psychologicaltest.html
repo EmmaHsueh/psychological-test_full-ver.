@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>心理測驗</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-1: #8a2b2b; /* 後宮甄嬛傳 */
+      --color-2: #a994e0; /* K-POP */
+      --color-3: #e8f1fc; /* 動漫人格 */
+      --color-4: #9e87c4; /* 韓國宮廷漫畫 */
+      --color-5: #1e4078; /* 鏡中人格 */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* 漸層背景 - 五個測驗主題色組成 */
+    .gradient-bg {
+      background: linear-gradient(135deg,
+        var(--color-1) 0%,
+        var(--color-2) 25%,
+        var(--color-3) 50%,
+        var(--color-4) 75%,
+        var(--color-5) 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* 頁面容器 */
+    .page {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    /* ===== 主頁 ===== */
+    #home-page {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #home-page h1 {
+      font-family: "Noto Serif TC", serif;
+      font-size: 48px;
+      color: white;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+      z-index: 10;
+      animation: fadeInDown 1s ease;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .start-btn {
+      padding: 16px 48px;
+      font-size: 20px;
+      background: white;
+      color: var(--color-5);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      z-index: 10;
+      font-weight: 600;
+      animation: fadeInUp 1s ease 0.5s backwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .start-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+    }
+
+    /* 花瓣動畫 */
+    .petal-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50% 0 50% 0;
+      animation: fall linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* ===== 測驗聲明彈窗 ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      animation: modalSlideIn 0.4s ease;
+      text-align: center;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .modal h2 {
+      color: var(--color-5);
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .modal p {
+      color: #666;
+      line-height: 1.8;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    .confirm-btn {
+      padding: 14px 40px;
+      font-size: 18px;
+      background: linear-gradient(135deg, var(--color-1), var(--color-5));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .confirm-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    /* ===== 測驗選擇區 ===== */
+    #selection-page {
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    #selection-page h1 {
+      font-family: "Noto Serif TC", serif;
+      color: white;
+      font-size: 36px;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .test-gallery {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 1400px;
+      width: 100%;
+    }
+
+    .test-card {
+      position: relative;
+      width: 250px;
+      height: 350px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+
+    .test-card:hover {
+      transform: translateY(-15px) scale(1.05);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      z-index: 10;
+    }
+
+    .test-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%);
+      z-index: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .test-card:hover::before {
+      opacity: 0.5;
+    }
+
+    .test-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .test-card-title {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      z-index: 2;
+      transform: translateY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .test-card:hover .test-card-title {
+      transform: translateY(-10px);
+    }
+
+    .test-card-accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 100%;
+      z-index: 3;
+      transition: width 0.3s ease;
+    }
+
+    .test-card:hover .test-card-accent {
+      width: 12px;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 1200px) {
+      .test-card {
+        width: 220px;
+        height: 320px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .test-gallery {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .test-card {
+        width: 280px;
+        height: 380px;
+      }
+
+      #home-page h1 {
+        font-size: 36px;
+      }
+
+      #selection-page h1 {
+        font-size: 28px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .test-card {
+        width: 100%;
+        max-width: 320px;
+        height: 400px;
+      }
+
+      #home-page h1 {
+        font-size: 28px;
+        padding: 0 20px;
+      }
+
+      .start-btn {
+        font-size: 18px;
+        padding: 14px 36px;
+      }
+
+      .modal {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 主頁 -->
+  <div id="home-page" class="page gradient-bg active">
+    <h1>心理測驗</h1>
+    <button class="start-btn" onclick="showDisclaimer()">開始測驗</button>
+
+    <!-- 花瓣容器 -->
+    <div class="petal-container" id="petal-container"></div>
+  </div>
+
+  <!-- 測驗聲明彈窗 -->
+  <div class="modal-overlay" id="disclaimer-modal">
+    <div class="modal">
+      <h2>測驗聲明</h2>
+      <p>
+        本網站提供的心理測驗僅供娛樂及趣味性質使用，<br>
+        並非正式的心理評估或醫療診斷工具。<br><br>
+        測驗結果僅供參考，不應作為任何重要決策的依據。<br>
+        如需專業心理諮詢，請尋求合格的心理健康專業人員協助。
+      </p>
+      <button class="confirm-btn" onclick="startTests()">我知道了，開始測驗</button>
+    </div>
+  </div>
+
+  <!-- 測驗選擇區 -->
+  <div id="selection-page" class="page gradient-bg">
+    <h1>選擇你的測驗</h1>
+    <div class="test-gallery" id="test-gallery">
+      <!-- 測驗卡片會由 JavaScript 動態生成 -->
+    </div>
+  </div>
+
+  <script>
+    // 測驗資料（按照指定順序）
+    const tests = [
+      {
+        url: 'https://41371115h-dot.github.io/fighttest/',
+        img: 'https://ppt.cc/ffNPMx@.png',
+        label: '後宮甄嬛傳 - 你是哪位娘娘?',
+        color: '#8a2b2b'
+      },
+      {
+        url: 'https://alisonnnnn88.github.io/kpopwebsite/',
+        img: 'https://ppt.cc/fX29Yx@.jpg',
+        label: '你是哪個K-POP偶像?',
+        color: '#a994e0'
+      },
+      {
+        url: 'https://yuhan222.github.io/animate-test/index.html',
+        img: 'https://i.postimg.cc/wBKMtcJg/ying-mu-xie-qu-hua-mian-2025-11-24-194101.png',
+        label: '動漫人格測驗:你是哪位主角?',
+        color: '#e8f1fc'
+      },
+      {
+        url: 'https://41371122h-lichi.github.io/lichi_funnytest/',
+        img: 'https://ppt.cc/fYl1yx@.jpg',
+        label: '韓國宮廷漫畫轉生測驗',
+        color: '#9e87c4'
+      },
+      {
+        url: 'https://emmahsueh.github.io/mirror_psychologicaltest/',
+        img: 'https://ppt.cc/fj4rtx@.jpg',
+        label: '鏡中人格：探索你的另一面',
+        color: '#1e4078'
+      }
+    ];
+
+    // 生成花瓣
+    function createPetals() {
+      const container = document.getElementById('petal-container');
+      const petalCount = 25;
+
+      for (let i = 0; i < petalCount; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+
+        // 隨機位置
+        petal.style.left = Math.random() * 100 + '%';
+
+        // 隨機大小
+        const size = Math.random() * 15 + 10;
+        petal.style.width = size + 'px';
+        petal.style.height = size + 'px';
+
+        // 隨機動畫時長
+        petal.style.animationDuration = (Math.random() * 5 + 8) + 's';
+
+        // 隨機延遲
+        petal.style.animationDelay = Math.random() * 5 + 's';
+
+        // 隨機透明度
+        petal.style.opacity = Math.random() * 0.5 + 0.3;
+
+        container.appendChild(petal);
+      }
+    }
+
+    // 顯示測驗聲明
+    function showDisclaimer() {
+      document.getElementById('disclaimer-modal').classList.add('active');
+    }
+
+    // 開始測驗
+    function startTests() {
+      // 隱藏主頁和彈窗
+      document.getElementById('home-page').classList.remove('active');
+      document.getElementById('disclaimer-modal').classList.remove('active');
+
+      // 顯示測驗選擇區
+      document.getElementById('selection-page').classList.add('active');
+    }
+
+    // 生成測驗卡片
+    function generateTestCards() {
+      const gallery = document.getElementById('test-gallery');
+
+      tests.forEach(test => {
+        const card = document.createElement('a');
+        card.className = 'test-card';
+        card.href = test.url;
+        card.target = '_blank';
+        card.rel = 'noopener noreferrer';
+        card.setAttribute('aria-label', test.label);
+
+        card.innerHTML = `
+          <div class="test-card-accent" style="background-color: ${test.color}"></div>
+          <img src="${test.img}" alt="${test.label}">
+          <div class="test-card-title">${test.label}</div>
+        `;
+
+        gallery.appendChild(card);
+      });
+    }
+
+    // 初始化
+    window.addEventListener('DOMContentLoaded', () => {
+      createPetals();
+      generateTestCards();
+    });
+  </script>
+</body>
+</html>
