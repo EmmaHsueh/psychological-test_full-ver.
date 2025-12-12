@@ -378,6 +378,25 @@ body {
   background: white;
 }
 
+.history-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* SVG 图标样式 */
+.icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+h2 .icon {
+  width: 24px;
+  height: 24px;
+}
+
 .stats-section {
   margin-bottom: 40px;
 }
@@ -388,6 +407,9 @@ body {
   margin-bottom: 20px;
   border-bottom: 3px solid var(--color-2);
   padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .stats-cards {

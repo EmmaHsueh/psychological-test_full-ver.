@@ -42,7 +42,9 @@
 
   <!-- 測驗選擇區 -->
   <div id="selection-page" class="page gradient-bg">
-    <button class="history-btn" onclick="showHistory()">📊 歷史記錄</button>
+    <button class="history-btn" onclick="showHistory()">
+      <img src="icons/chart.svg" alt="chart icon" class="icon"> 歷史記錄
+    </button>
     <h1>選擇你的測驗</h1>
     <div class="test-gallery" id="test-gallery">
       <!-- 測驗卡片會由 JavaScript 動態生成 -->
@@ -56,7 +58,7 @@
     <div class="history-container">
       <!-- 統計卡片 -->
       <div class="stats-section">
-        <h2>📈 統計概覽</h2>
+        <h2><img src="icons/trending-up.svg" alt="trending up icon" class="icon"> 統計概覽</h2>
         <div class="stats-cards">
           <div class="stat-card">
             <div class="number" id="total-tests">0</div>
@@ -75,7 +77,7 @@
 
       <!-- 圖表區域 -->
       <div class="stats-section">
-        <h2>📊 測驗統計圖表</h2>
+        <h2><img src="icons/chart.svg" alt="chart icon" class="icon"> 測驗統計圖表</h2>
         <div class="chart-container">
           <canvas id="testChart"></canvas>
         </div>
@@ -83,7 +85,7 @@
 
       <!-- 歷史記錄列表 -->
       <div class="stats-section">
-        <h2>🕐 測驗記錄</h2>
+        <h2><img src="icons/clock.svg" alt="clock icon" class="icon"> 測驗記錄</h2>
         <div id="history-list" class="history-list">
           <!-- 記錄會由 JavaScript 動態生成 -->
         </div>
