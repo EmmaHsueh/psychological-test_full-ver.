@@ -17,6 +17,9 @@ const API_CONFIG = {
   // quotesAPI: 'https://api.quotable.io/random',
   // weatherAPI: 'https://api.openweathermap.org/data/2.5/weather',
   // firebaseConfig: { ... }
+
+  // 每日推薦測驗 API
+  dailyTestAPI: 'https://api.npoint.io/demo', // 可替換為真實API
 };
 
 /**
@@ -113,6 +116,66 @@ export async function getRecommendedTests(completedTests) {
   } catch (error) {
     console.error('獲取推薦失敗:', error);
     return [];
+  }
+}
+
+/**
+ * 獲取每日推薦測驗（新增）
+ * 使用進階推薦引擎
+ * @returns {Promise<Object>} 每日推薦的測驗
+ */
+export async function getDailyRecommendedTest() {
+  try {
+    // 動態導入推薦引擎
+    const { getDailyRecommendation } = await import('./recommendationEngine.js');
+
+    // 模擬API延遲
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    const recommendation = getDailyRecommendation();
+
+    return {
+      success: true,
+      data: recommendation,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    console.error('獲取每日推薦失敗:', error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+}
+
+/**
+ * 獲取多個推薦測驗（新增）
+ * @param {number} count - 推薦數量
+ * @returns {Promise<Object>} 推薦測驗列表
+ */
+export async function getMultipleRecommendations(count = 6) {
+  try {
+    // 動態導入推薦引擎
+    const { getMultipleRecommendations } = await import('./recommendationEngine.js');
+
+    // 模擬API延遲
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const recommendations = getMultipleRecommendations(count);
+
+    return {
+      success: true,
+      data: recommendations,
+      count: recommendations.length,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    console.error('獲取推薦列表失敗:', error);
+    return {
+      success: false,
+      error: error.message,
+      data: []
+    };
   }
 }
 

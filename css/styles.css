@@ -516,6 +516,426 @@ h2 .icon {
   transform: translateY(-2px);
 }
 
+/* ===== 推薦頁面樣式 ===== */
+#recommendation-page {
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+
+#recommendation-page h1 {
+  font-family: "Noto Serif TC", serif;
+  color: white;
+  font-size: 36px;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+}
+
+.recommendation-container {
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* 頂部導航按鈕 */
+.top-nav-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
+.nav-btn {
+  padding: 12px 24px;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-5);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  background: white;
+}
+
+/* 每日推薦區 */
+.daily-recommendation-section {
+  margin-bottom: 50px;
+}
+
+.daily-recommendation-section h2 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.daily-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.daily-test-card {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  min-height: 350px;
+  position: relative;
+}
+
+.daily-test-badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255,255,255,0.95);
+  color: #333;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 14px;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.daily-test-image {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.daily-test-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.3) 100%);
+}
+
+.daily-test-content {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+}
+
+.daily-test-content h3 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.daily-test-description {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.daily-test-meta {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.category-tag, .duration-tag {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.category-tag {
+  background: var(--color-2);
+  color: white;
+}
+
+.duration-tag {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.recommendation-reason {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 25px;
+  font-style: italic;
+}
+
+.reason-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.start-daily-test-btn {
+  padding: 16px 40px;
+  font-size: 18px;
+  background: linear-gradient(135deg, var(--color-1), var(--color-5));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.start-daily-test-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* 更多推薦區 */
+.more-recommendations-section {
+  margin-bottom: 40px;
+}
+
+.more-recommendations-section h2 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.recommendation-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+.rec-card-image {
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.rec-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.6) 100%);
+}
+
+.rec-card-content {
+  padding: 20px;
+}
+
+.rec-card-content h4 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.rec-card-desc {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.rec-card-meta {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.category-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.duration-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  background: #f0f0f0;
+  color: #666;
+}
+
+.rec-reason {
+  color: #888;
+  font-size: 13px;
+  margin-bottom: 15px;
+  font-style: italic;
+}
+
+.rec-test-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background: linear-gradient(135deg, var(--color-1), var(--color-5));
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.rec-test-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* 推薦統計區 */
+.recommendation-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  background: rgba(255,255,255,0.95);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.stat-item {
+  text-align: center;
+  padding: 20px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.stat-label {
+  display: block;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.stat-value {
+  display: block;
+  color: var(--color-5);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+/* 載入動畫 */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(0,0,0,0.1);
+  border-top: 4px solid var(--color-5);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+  color: #666;
+  font-size: 16px;
+}
+
+/* 錯誤信息 */
+.error-message {
+  text-align: center;
+  padding: 40px;
+  color: #dc3545;
+}
+
+/* 響應式設計 - 推薦頁面 */
+@media (max-width: 900px) {
+  .daily-test-card {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-test-image {
+    height: 250px;
+  }
+
+  .recommendations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .recommendation-stats {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .top-nav-buttons {
+    position: static;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 520px) {
+  .daily-test-content {
+    padding: 30px 20px;
+  }
+
+  .daily-test-content h3 {
+    font-size: 22px;
+  }
+
+  #recommendation-page h1 {
+    font-size: 28px;
+  }
+}
+
 /* 響應式設計 */
 @media (max-width: 1200px) {
   .test-card {

@@ -6,6 +6,7 @@
 import { TESTS, PETAL_CONFIG } from './config.js';
 import { recordTest } from './storage.js';
 import { showHistory, backToSelection, clearHistory } from './history.js';
+import { showRecommendationPage } from './recommendation.js';
 
 /**
  * 生成花瓣動畫
@@ -108,6 +109,7 @@ function init() {
   window.showDisclaimer = showDisclaimer;
   window.startTests = startTests;
   window.showHistory = showHistory;
+  window.showRecommendation = showRecommendationPage;
   window.backToSelection = backToSelection;
   window.clearHistory = clearHistory;
 }

@@ -42,12 +42,65 @@
 
   <!-- 測驗選擇區 -->
   <div id="selection-page" class="page gradient-bg">
-    <button class="history-btn" onclick="showHistory()">
-      <img src="icons/chart.svg" alt="chart icon" class="icon"> 歷史記錄
-    </button>
+    <div class="top-nav-buttons">
+      <button class="nav-btn recommendation-btn" onclick="showRecommendation()">
+        <img src="icons/trending-up.svg" alt="recommendation icon" class="icon"> 為你推薦
+      </button>
+      <button class="nav-btn history-btn" onclick="showHistory()">
+        <img src="icons/chart.svg" alt="chart icon" class="icon"> 歷史記錄
+      </button>
+    </div>
     <h1>選擇你的測驗</h1>
     <div class="test-gallery" id="test-gallery">
       <!-- 測驗卡片會由 JavaScript 動態生成 -->
+    </div>
+  </div>
+
+  <!-- 推薦測驗頁面 -->
+  <div id="recommendation-page" class="page gradient-bg">
+    <button class="back-btn" onclick="backToSelection()">← 返回測驗選擇</button>
+    <h1>為你推薦</h1>
+
+    <div class="recommendation-container">
+      <!-- 每日推薦區 -->
+      <div class="daily-recommendation-section">
+        <h2><img src="icons/trending-up.svg" alt="trending" class="icon"> 今日精選推薦</h2>
+        <div id="daily-recommendation-card" class="daily-card">
+          <!-- 加載中狀態 -->
+          <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>正在為你尋找最適合的測驗...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 更多推薦區 -->
+      <div class="more-recommendations-section">
+        <h2><img src="icons/chart.svg" alt="chart" class="icon"> 更多推薦測驗</h2>
+        <div id="more-recommendations-grid" class="recommendations-grid">
+          <!-- 加載中狀態 -->
+          <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>載入中...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 統計信息 -->
+      <div class="recommendation-stats">
+        <div class="stat-item">
+          <span class="stat-label">已完成測驗</span>
+          <span class="stat-value" id="completed-count">-</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">最喜歡的類別</span>
+          <span class="stat-value" id="favorite-category">-</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">可探索測驗</span>
+          <span class="stat-value" id="available-count">-</span>
+        </div>
+      </div>
     </div>
   </div>
 
