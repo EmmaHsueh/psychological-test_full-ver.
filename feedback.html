@@ -114,6 +114,16 @@
             font-size: 1.8rem;
             font-weight: 600;
             margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .title-icon {
+            width: 32px;
+            height: 32px;
+            color: var(--color-5);
         }
 
         .intro p {
@@ -175,16 +185,27 @@
 
         .note {
             margin-top: 1.5rem;
-            padding: 1.2rem;
+            padding: 1.2rem 1.2rem 1.2rem 3.5rem;
             background: linear-gradient(135deg,
-                rgba(255, 243, 205, 0.9),
-                rgba(255, 238, 186, 0.9));
-            border-left: 4px solid #ffc107;
+                rgba(158, 135, 196, 0.15),
+                rgba(212, 135, 212, 0.15));
+            border-left: 4px solid var(--color-4);
             border-radius: 8px;
-            color: #856404;
+            color: #5a4a6a;
             font-size: 1rem;
             line-height: 1.6;
-            box-shadow: 0 2px 10px rgba(255, 193, 7, 0.2);
+            box-shadow: 0 2px 10px rgba(158, 135, 196, 0.2);
+            position: relative;
+        }
+
+        .note-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            color: var(--color-4);
         }
 
         @media (max-width: 768px) {
@@ -250,7 +271,16 @@
 
         <div class="content">
             <div class="intro">
-                <h2>📝 測驗回饋表單</h2>
+                <h2>
+                    <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    測驗回饋表單
+                </h2>
                 <p>請花幾分鐘時間，分享您對這些心理測驗的想法與建議。<br>您的回饋將幫助我們提供更好的測驗體驗！</p>
             </div>
 
@@ -265,7 +295,12 @@
             </div>
 
             <div class="note">
-                💡 小提示：填寫完回饋表單後，請點擊下方按鈕返回測驗區，探索更多有趣的心理測驗！
+                <svg class="note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                小提示：填寫完回饋表單後，請點擊下方按鈕返回測驗區，探索更多有趣的心理測驗！
             </div>
         </div>
 
