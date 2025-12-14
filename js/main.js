@@ -119,6 +119,28 @@ function init() {
   window.showRecommendation = showRecommendationPage;
   window.backToSelection = backToSelection;
   window.clearHistory = clearHistory;
+  window.showHelpModal = showHelpModal;
+  window.closeHelpModal = closeHelpModal;
+}
+
+/**
+ * 顯示使用說明彈窗
+ */
+function showHelpModal() {
+  const modal = document.getElementById('help-modal');
+  if (modal) {
+    modal.classList.add('active');
+  }
+}
+
+/**
+ * 關閉使用說明彈窗
+ */
+function closeHelpModal() {
+  const modal = document.getElementById('help-modal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
 }
 
 // DOM 載入完成後初始化

@@ -46,6 +46,16 @@
       <img src="icons/chart.svg" alt="chart icon" class="icon">
       <span class="btn-text">歷史記錄</span>
     </button>
+
+    <!-- 使用說明按鈕 -->
+    <button class="help-btn" onclick="showHelpModal()" aria-label="使用說明">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+    </button>
+
     <h1>選擇你的測驗</h1>
     <div class="test-gallery" id="test-gallery">
       <!-- 測驗卡片會由 JavaScript 動態生成 -->
@@ -53,6 +63,63 @@
     <button class="recommendation-btn-bottom" onclick="showRecommendation()">
       <img src="icons/trending-up.svg" alt="recommendation icon" class="icon"> 探索更多推薦測驗
     </button>
+  </div>
+
+  <!-- 使用說明彈窗 -->
+  <div class="modal-overlay" id="help-modal">
+    <div class="modal help-modal">
+      <button class="modal-close" onclick="closeHelpModal()" aria-label="關閉">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <h2>
+        <svg class="modal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        使用說明
+      </h2>
+
+      <div class="modal-content">
+        <div class="help-section">
+          <h3>📋 如何使用</h3>
+          <ol>
+            <li>在測驗區選擇您感興趣的心理測驗</li>
+            <li>依照題目指示完成測驗</li>
+            <li>查看您的測驗結果與分析</li>
+            <li>可隨時查看歷史記錄（右上角按鈕）</li>
+          </ol>
+        </div>
+
+        <div class="help-section feedback-section">
+          <h3>💭 您的意見很重要</h3>
+          <p>完成測驗後，我們誠摯邀請您分享使用心得！</p>
+          <p>您的回饋將幫助我們提供更好的測驗體驗。</p>
+          <button class="feedback-link-btn" onclick="window.location.href='feedback.html'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            填寫回饋表單
+          </button>
+        </div>
+
+        <div class="help-section">
+          <h3>ℹ️ 注意事項</h3>
+          <ul>
+            <li>本測驗僅供娛樂參考，非專業心理評估</li>
+            <li>請在放鬆的心情下完成測驗</li>
+            <li>測驗結果會自動記錄在歷史記錄中</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- 推薦測驗頁面 -->
