@@ -719,10 +719,10 @@ function resetQuiz() {
 }
 
 // ===============================
-// 跳轉到首頁
+// 跳轉到回饋表單頁面
 // ===============================
 function goToHomePage() {
-    window.location.href = 'https://psychological-test-full-ver.onrender.com';
+    window.location.href = 'feedback.html';
 }
 
 // ===============================

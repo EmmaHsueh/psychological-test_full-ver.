@@ -616,7 +616,7 @@ function startQuiz() {
     exit.style.top = "20px";
     exit.style.left = "20px";
     exit.style.zIndex = "10";
-    exit.onclick = () => { window.location.href = "https://psychological-test-full-ver.onrender.com"; };
+    exit.onclick = () => { window.location.href = "feedback.html"; };
 
     document.body.appendChild(exit); // 全局只加一次會更好，但這裡保留原邏輯
     nav.appendChild(exit);
@@ -740,7 +740,7 @@ function showResult() {
 
       <div style="display:flex; justify-content:center; gap: 10px; margin-top:25px;">
         <button class="btn ${selectedGender}" style="width: 48%;" onclick="restartQuiz()">再玩一次 🔄</button>
-        <button class="btn ${selectedGender}" style="width: 48%;" onclick="window.location.href='https://psychological-test-full-ver.onrender.com'">回首頁 🏠</button>
+        <button class="btn ${selectedGender}" style="width: 48%;" onclick="window.location.href='feedback.html'">回饋表單 📝</button>
       </div>
     </div>
   `;
