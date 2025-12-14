@@ -66,12 +66,20 @@ export function clearAllHistory() {
  * @returns {Object} 統計數據物件
  */
 export function calculateStats(history) {
-  const totalTests = history.length;
-  const uniqueTests = new Set(history.map(record => record.testId)).size;
+  // 定義五個心理測驗的 ID
+  const validTestIds = ['test-1', 'test-2', 'test-3', 'test-4', 'test-5'];
+
+  // 只保留這五個測驗的記錄
+  const filteredHistory = history.filter(record =>
+    validTestIds.includes(record.testId)
+  );
+
+  const totalTests = filteredHistory.length;
+  const uniqueTests = new Set(filteredHistory.map(record => record.testId)).size;
 
   // 計算每個測驗的次數
   const testCounts = {};
-  history.forEach(record => {
+  filteredHistory.forEach(record => {
     testCounts[record.testLabel] = (testCounts[record.testLabel] || 0) + 1;
   });
 

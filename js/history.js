@@ -63,8 +63,16 @@ function generateHistoryList(history) {
 
   listContainer.innerHTML = '';
 
+  // 定義五個心理測驗的 ID
+  const validTestIds = ['test-1', 'test-2', 'test-3', 'test-4', 'test-5'];
+
+  // 只保留這五個測驗的記錄
+  const filteredHistory = history.filter(record =>
+    validTestIds.includes(record.testId)
+  );
+
   // 如果沒有記錄，顯示空狀態
-  if (history.length === 0) {
+  if (filteredHistory.length === 0) {
     listContainer.innerHTML = `
       <div class="empty-state">
         <p>尚無測驗記錄</p>
@@ -75,7 +83,7 @@ function generateHistoryList(history) {
   }
 
   // 生成每一筆記錄
-  history.forEach(record => {
+  filteredHistory.forEach(record => {
     const item = document.createElement('div');
     item.className = 'history-item';
 
