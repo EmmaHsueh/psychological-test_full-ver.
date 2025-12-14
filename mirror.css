@@ -951,9 +951,9 @@ html {
 
     /* 確保首頁在手機上可以滾動 */
     #intro-scene {
-        align-items: flex-start;
-        padding-top: 10vh;
-        padding-bottom: 5vh;
+        align-items: center;
+        padding-top: 15vh;
+        padding-bottom: 10vh;
     }
 
     /* 確保結果頁在手機上可以滾動 */
@@ -1071,8 +1071,9 @@ html {
 
     /* 調整內容間距避免貼邊 */
     #intro-scene {
-        padding: 5vh 1rem;
-        padding-bottom: 5vh;
+        align-items: center;
+        padding: 12vh 1rem;
+        padding-bottom: 8vh;
     }
 
     #result-scene {
