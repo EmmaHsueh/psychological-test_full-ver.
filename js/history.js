@@ -132,6 +132,10 @@ export function showHistory() {
   const historyPage = document.getElementById('history-page');
   if (historyPage) historyPage.classList.add('active');
 
+  // 隱藏使用說明按鈕
+  const helpBtn = document.getElementById('help-btn');
+  if (helpBtn) helpBtn.style.display = 'none';
+
   loadHistoryPage();
 }
 
@@ -147,4 +151,8 @@ export function backToSelection() {
   // 顯示測驗選擇頁面
   const selectionPage = document.getElementById('selection-page');
   if (selectionPage) selectionPage.classList.add('active');
+
+  // 顯示使用說明按鈕
+  const helpBtn = document.getElementById('help-btn');
+  if (helpBtn) helpBtn.style.display = 'flex';
 }

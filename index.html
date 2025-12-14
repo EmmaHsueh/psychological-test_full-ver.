@@ -47,15 +47,6 @@
       <span class="btn-text">歷史記錄</span>
     </button>
 
-    <!-- 使用說明按鈕 -->
-    <button class="help-btn" onclick="showHelpModal()" aria-label="使用說明">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-        <line x1="12" y1="17" x2="12.01" y2="17"></line>
-      </svg>
-    </button>
-
     <h1>選擇你的測驗</h1>
     <div class="test-gallery" id="test-gallery">
       <!-- 測驗卡片會由 JavaScript 動態生成 -->
@@ -64,6 +55,15 @@
       <img src="icons/trending-up.svg" alt="recommendation icon" class="icon"> 探索更多推薦測驗
     </button>
   </div>
+
+  <!-- 使用說明按鈕（固定在測驗選擇區左下角） -->
+  <button class="help-btn" id="help-btn" onclick="showHelpModal()" aria-label="使用說明" style="display: none;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+    </svg>
+  </button>
 
   <!-- 使用說明彈窗 -->
   <div class="modal-overlay" id="help-modal">

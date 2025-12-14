@@ -184,6 +184,10 @@ export function showRecommendationPage() {
   const recommendationPage = document.getElementById('recommendation-page');
   recommendationPage.classList.add('active');
 
+  // 隱藏使用說明按鈕
+  const helpBtn = document.getElementById('help-btn');
+  if (helpBtn) helpBtn.style.display = 'none';
+
   // 載入推薦內容
   loadRecommendationPage();
 }

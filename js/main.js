@@ -70,6 +70,9 @@ function startTests() {
 
   const selectionPage = document.getElementById('selection-page');
   if (selectionPage) selectionPage.classList.add('active');
+
+  // 顯示使用說明按鈕
+  showHelpButton();
 }
 
 /**
@@ -140,6 +143,26 @@ function closeHelpModal() {
   const modal = document.getElementById('help-modal');
   if (modal) {
     modal.classList.remove('active');
+  }
+}
+
+/**
+ * 顯示使用說明按鈕
+ */
+function showHelpButton() {
+  const helpBtn = document.getElementById('help-btn');
+  if (helpBtn) {
+    helpBtn.style.display = 'flex';
+  }
+}
+
+/**
+ * 隱藏使用說明按鈕
+ */
+function hideHelpButton() {
+  const helpBtn = document.getElementById('help-btn');
+  if (helpBtn) {
+    helpBtn.style.display = 'none';
   }
 }
 
