@@ -495,6 +495,15 @@ body {
   color: var(--color-5);
   margin-bottom: 1rem;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
 }
 
 .help-section ol,
@@ -502,6 +511,18 @@ body {
   margin-left: 1.5rem;
   line-height: 1.8;
   color: #555;
+}
+
+/* 步驟列表靠左對齊 */
+.steps-list {
+  margin-left: 0;
+  padding-left: 1.2rem;
+  list-style-position: outside;
+}
+
+.steps-list li {
+  margin-bottom: 0.8rem;
+  padding-left: 0.3rem;
 }
 
 .help-section li {
@@ -512,6 +533,18 @@ body {
   color: #666;
   line-height: 1.8;
   margin-bottom: 0.8rem;
+}
+
+/* 注意事項無列點樣式 */
+.notice-text {
+  margin-left: 0;
+}
+
+.notice-text p {
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 0.8rem;
+  padding-left: 0;
 }
 
 /* 回饋區塊特殊樣式 */
