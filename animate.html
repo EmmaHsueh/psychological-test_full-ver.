@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>動漫人格測驗：你是哪位主角？</title>
+
+<style>
+/* 新增：回首頁按鈕樣式 */
+.home-button {
+    position: fixed; /* 固定位置 */
+    top: 20px; /* 距離頂部 20px */
+    right: 20px; /* 距離右側 20px */
+    background-color: #3648eb; /* 按鈕背景色 */
+    color: #fff; /* 文字顏色 */
+    padding: 10px 15px; /* 內邊距 */
+    border-radius: 10px; /* 圓角 */
+    text-decoration: none; /* 移除下劃線 */
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 陰影 */
+    transition: background-color 0.3s, transform 0.3s;
+    z-index: 1000; /* 確保在最上層 */
+}
+
+.home-button:hover {
+    background-color: #1b08b1;
+    transform: scale(1.05); /* 鼠標懸停時放大 */
+}
+body { 
+    font-family:"Arial",sans-serif; 
+    margin:0; 
+    /* 調整 padding：頂部增加至 80px，確保內容不被按鈕遮擋 */
+    padding: 80px 40px 40px 40px; 
+    text-align:center; 
+    min-height:100vh; 
+
+    /* ✅ 霓虹感背景漸層 */
+    background: radial-gradient(circle at top left, #2b2b6f 0%, #05081a 45%, #02030a 100%);
+    color: #fff;
+    position: relative;
+    
+    /* ✂ 把這行刪掉或改掉：
+    overflow: hidden;
+    */
+
+    /* 建議這樣寫：垂直可以捲動，只是不要有水平捲軸 */
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+
+h1{font-size:32px;font-weight:bold;color:#2b2b6f;}
+h2,h3{color:#2b2b6f;}
+p{color:#555;}
+button{cursor:pointer;transition:0.3s;}
+.question-card {background: #f8f9ff; padding: 25px;border-radius: 20px;margin-top: 40px;box-shadow: 0 6px 15px rgba(0,0,0,0.08);display: inline-block;width: 90%;max-width: 500px;}
+.option-btn{background-color:#fff;border:2px solid #3648eb;border-radius:12px;padding:10px 20px;margin:8px;width:250px;font-size:15px;}
+.option-btn:hover{background-color:#d8d8ff;transform: scale(1.05);box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
+.card{background-color:#fff;padding:30px;border-radius:20px;display:inline-block;margin-top:40px;box-shadow: 0 10px 20px rgba(0,0,0,0.08);}
+.restart-btn,.start-btn{margin-top:30px;background-color:#3648eb;color:#fff;border:none;padding:10px 20px;border-radius:10px;font-size:16px;}
+.start-btn:hover,.restart-btn:hover {background-color: #1b08b1;}
+.characters{display:flex;justify-content:center;flex-wrap: wrap; /* 自動換行 */gap: 20px 40px;  /* 上下 20px，左右 40px */;margin-top:20px;}
+.other-characters-container {
+  display: flex;
+  flex-direction: row;      /* 左右排列 */
+  flex-wrap: wrap;          /* 自動換行 */
+  gap: 25px 50px;
+  justify-content: center;  /* 水平置中 */
+  margin-top: 20px;
+}
+.character img{width:150px;height:150px;object-fit:cover;border-radius:10px;}
+.character h4{color:#444;margin-top:10px;}
+.character p{color:#777;}
+.fade {transition: opacity 0.5s ease;opacity: 1;}
+.fade-out {opacity: 0;}
+.progress-bar {width: 0%;height: 16px;border-radius: 8px;background: linear-gradient(90deg, #4c59e6, #3c5ceb, #4c59e6);background-size: 200% 100%;animation: shine 1.5s linear infinite;transition: width 0.5s ease-in-out;}
+@keyframes shine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+/* 🔮 霓虹背景漂浮光球 */
+.bg-circle {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  animation: floatAnim infinite alternate ease-in-out;
+  z-index: -1;        /* ✅ 保證在所有內容後面 */
+  pointer-events: none;
+}
+
+/* 三顆不同顏色的霓虹光球 */
+.bg-circle.c1 {
+  width: 260px;
+  height: 260px;
+  top: -5%;
+  left: 10%;
+  background: rgba(255, 107, 190, 0.35);  /* 粉紅霓虹 */
+  animation-duration: 12s;
+}
+
+.bg-circle.c2 {
+  width: 340px;
+  height: 340px;
+  top: 40%;
+  right: -5%;
+  background: rgba(90, 103, 216, 0.4);    /* 紫藍霓虹 */
+  animation-duration: 16s;
+}
+
+.bg-circle.c3 {
+  width: 220px;
+  height: 220px;
+  bottom: -5%;
+  left: 20%;
+  background: rgba(0, 255, 240, 0.25);    /* 青綠霓虹 */
+  animation-duration: 20s;
+}
+
+@keyframes floatAnim {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(25px, -35px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+    .result-card { position: relative; max-width: 600px; margin: auto; background:#fff; padding:40px; border-radius:25px; box-shadow:0 20px 40px rgba(0,0,0,0.15); text-align:center; opacity: 0; transform: scale(0.8); animation: fadeInBounce 1s forwards; }
+    @keyframes fadeInBounce { 0% { opacity:0; transform: scale(0.8); } 60% { opacity:1; transform: scale(1.05); } 80% { transform: scale(0.95); } 100% { transform: scale(1); } }
+    .other-card { flex: 0 0 220px; background: rgba(90,103,216,0.05); border-radius:15px; padding:15px; box-shadow:0 10px 20px rgba(0,0,0,0.08); text-align:center; opacity:0; transform: scale(0.9); animation: fadeScale 0.6s forwards; }
+    .other-card:nth-child(1) { animation-delay:0.3s; } .other-card:nth-child(2) { animation-delay:0.6s; }.other-card img {width: 150px; height: 150px;/* 角色圖片放大 */margin-bottom: 12px;}.other-card h4 {font-size: 20px;/* 角色名稱放大 */}.other-card p {
+  font-size: 15px;/* 相似度文字放大 */}
+    @keyframes fadeScale { to { opacity:1; transform: scale(1); } }
+    .restart-btn { margin-top:40px; padding:15px 30px; font-size:18px; opacity:0; transform: translateY(20px); animation: fadeUp 0.8s forwards; animation-delay:1s; }
+    @keyframes fadeUp { to { opacity:1; transform: translateY(0); } }
+    .question-box {
+  background: #fff;
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.options-box {
+  background: #fff;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.result-card img {
+  display: block;
+  margin: 0 auto;
+  width: 200px;       /* 可自行調整大小 */
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* --- 響應式設計 --- */
+@media (max-width: 768px) {
+  body {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .question-card, .result-card, .options-box, .question-box {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .option-btn {
+    width: 100%;
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .characters, .other-characters-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .character img, .other-card img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .other-card {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .result-card img {
+    width: 150px;
+    height: 150px;
+  }
+
+  .restart-btn, .start-btn {
+    width: 100%;
+    font-size: 16px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  .option-btn {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .result-card img {
+    width: 120px;
+    height: 120px;
+  }
+}
+/* --- 到這裡結束 --- */
+</style>
+</head>
+<body>
+  <!-- 霓虹背景光球 -->
+<div class="bg-circle c1"></div>
+<div class="bg-circle c2"></div>
+<div class="bg-circle c3"></div>
+
+<a href="https://psychological-test-full-ver.onrender.com/" class="home-button">回首頁</a>
+<div id="quiz"></div>
+
+<script>
+// ---------- 角色資料 ----------
+const characters = [
+  { name:"鳴人（火影忍者）", image:"https://i.postimg.cc/Wb5gbPGy/fa5d029a95cfae91ef11372f5b9d0b3f.jpg", 
+        traits:{personality:47.7,behavior:50,values:44.5}, 
+        analysis:"你樂觀積極，對友情與認可有強烈渴望，對於達成目標有一定的堅持，並且能夠通過永不放棄的心態去達成。",
+        adjective:"熱血外向、行動派、信念強", 
+        quote:"我未來的夢想是成為最偉大的火影！整個村子就不會再瞧不起我，開始把我當作重要的人。",
+        details:{gender:"男性", age:"19歲", status:"存活", job:"忍者、（後成為）第七代火影"} },
+  { name:"艾連（進擊的巨人）", image:"https://i.postimg.cc/zXzTrfgV/1d2c35bdeea9ebbf923ecb27889f95bb.jpg", 
+        traits:{personality:32,behavior:34.5,values:31}, 
+        analysis:"你擁有強烈的信念感，勇於改變命運，有時略顯固执，對於朋友更是十分在乎。",
+        adjective:"衝動、執著的理想主義者", 
+        quote:"我們每一個人，從出生那一刻開始，就是自由的。",
+        details:{gender:"男性", age:"16歲", status:"死亡", job:"士兵、巨人繼承者"} },
+  { name:"炭治郎（鬼滅之刃）", image:"https://i.postimg.cc/J4rjLhkj/8c26f52d57c6a3bd19a136e1fae298bb.jpg", 
+        traits:{personality:36.7,behavior:36.5,values:36}, 
+        analysis:"你溫柔體貼、具有正義感，且重視家庭，即使身邊有人做了錯事，也不會去替他遮掩。" ,
+        adjective:"非常溫柔、有責任感、共情型人格", 
+        quote:"無論何時，都請為自己感到自豪，並且努力活下去！",
+        details:{gender:"男性", age:"16歲", status:"存活", job:"鬼殺隊劍士"}},
+  { name:"虎杖悠仁（咒術迴戰）", image:"https://i.postimg.cc/3JtmJHXB/c35881ae2708c4a5aec4672c12ecc7f4.jpg", 
+        traits:{personality:31.5,behavior:29.5,values:29}, 
+        analysis:"你自信又風趣，對待身邊的人十分溫柔且善良。",
+        adjective:"善良又溫柔、願意為他人犧牲付出、內心情感豐富。", 
+        quote:"雖然我不知道自己死的時候會是怎樣，但我不想在活著的時候後悔",
+        details:{gender:"男性", age:"15歲", status:"存活", job:"咒術師"} },
+  { name:"利姆魯（關於我轉生變成史萊姆）", image:"https://i.postimg.cc/m2L7srHz/68a3911c9e7c637068c94c68c1c9cb57.jpg", 
+        traits:{personality:29,behavior:32,values:32}, 
+        analysis:"你聰明、善於應變，擁有包容心與領導力，在團隊中屬於不可或缺的存在，願意聆聽他人的煩惱並給予建議。",
+        adjective:"理性領導型、具有可靠性", 
+        quote:"沒有信念的力量毫無意義，沒有力量的信念毫無價值。",
+        details:{gender:"無性", age:"37歲", status:"存活", job:"魔王"} },
+  { name:"夜神月（死亡筆記本）", image:"https://i.postimg.cc/9Fmyhf74/0ca6a28318f3b18c06be0d5042f52b78.jpg", 
+        traits:{personality:23,behavior:27,values:25}, 
+        analysis:"你聰明、有計畫性，追求正義與秩序，且十分的理性，遇到問體會仔細分析並解決它。" ,
+        adjective:"冷靜智謀、極端理性派", 
+        quote:"我要制裁法律無法制裁的壞人，創造理想的社會。",
+        details:{gender:"男性", age:"23歲", status:"死亡", job:"學生、警察"}},
+  { name:"黑子哲也（黑子的籃球）", image:"https://i.postimg.cc/TYdn6PD7/c283d36ec3fbae78da5611c4dde3259f.jpg", 
+        traits:{personality:26,behavior:26.5,values:28}, 
+        analysis:"你低調、不搶風頭，但默默支持著身邊的人，也能夠給予他人幸福。",
+        adjective:"低調穩定、注重團隊、溫柔善良", 
+        quote:"無論遊戲結束時你獲得多少分，如果你不開心，那就不算勝利。",
+        details:{gender:"男性", age:"16歲", status:"存活", job:"籃球員"} },
+  { name:"小傑（獵人×獵人）", image:"https://i.postimg.cc/SNgCNp65/f47da2431e77654449fb8f4c70cdaa5f.jpg", 
+        traits:{personality:35.7,behavior:38,values:34}, 
+        analysis:"你單純、勇敢、富有冒險精神，非常在乎朋友與成長，敢於嘗試且永不放棄。",
+        adjective:"天真熱情、直覺行動派、非常在乎身邊的朋友", 
+        quote:"當朋友是不需要什麼資格的。",
+        details:{gender:"男性", age:"13歲", status:"存活", job:"職業獵人"} },
+  { name:"齊木楠雄（齊木楠雄的災難）", image:"https://i.postimg.cc/JnGq3zR6/5a757e00-aee6-4f4a-818e-ccf462c6a28b.png", 
+        traits:{personality:17,behavior:18,values:16}, 
+        analysis:"你冷靜、有智慧，喜歡平靜的生活，不擅於表達對身邊人的關心，但會在行動中默默為他人付出。" ,
+        adjective:"很理性、冷淡卻有責任心", 
+        quote:"我討厭引人注目，但我更討厭虧欠一個人。",
+        details:{gender:"男性", age:"16歲", status:"存活", job:"高中生"}},
+  { name:"殺老師（暗殺教室）", image:"https://i.postimg.cc/fTzYNb9K/728035d32ad9054dade107d72c88f791.jpg", 
+        traits:{personality:30,behavior:32.5,values:31}, 
+        analysis:"你幽默、聰明、富責任感，擅長激勵他人，十分在乎一個團隊的融合度，是一個很好的領導者。" ,
+        adjective:"聰明樂觀、重視成長", 
+        quote:"新手跟大師的差別，在於大師失敗的次數比新手嘗試的次數還多。",
+        details:{gender:"無性", age:"無年齡", status:"死亡", job:"老師"}},
+  { name:"坂本太郎（坂本日常）", image:"https://i.postimg.cc/YqrQHSW2/4fe385c8afc6905ca8efc74e4ad370a3.jpg", 
+        traits:{personality:26,behavior:27.5,values:27}, 
+        analysis:"你幽默、日常感十足，對於其他事物可能不是很關心，但非常在乎家人與朋友。",
+        adjective:"穩重理智、有責任感、非常重視身邊的人", 
+        quote:"我未來的夢想是成為最偉大的火影！整個村子就不會再瞧不起我，開始把我當作重要的人。",
+        details:{gender:"男性", age:"27歲", status:"存活", job:"(前)殺手、店長"} },
+  { name:"馬修·班地德（肌肉魔法使）", image:"https://i.postimg.cc/YqdYqwNc/fe4eaa5693f0b273a8600fe192aa9350.jpg", 
+        traits:{personality:27,behavior:32,values:24}, 
+        analysis:"你熱血，熱愛挑戰與鍛鍊自己，不怕眼前的困難。" ,
+        adjective:"頭腦簡單心善良", 
+        quote:"如果連和爺爺平安生活都不行的話……那我就用拳頭打爆這個世界。",
+        details:{gender:"男性", age:"16歲", status:"存活", job:"神覺者"}},
+  { name:"黑崎一護（死神）", image:"https://i.postimg.cc/xT6MTSvL/c332f006b7faf6d088f66e286d915356.jpg", 
+        traits:{personality:33,behavior:38.5,values:32}, 
+        analysis:"你勇敢、重視夥伴與自由，善於計畫與行動，是一個非常可靠的人。" ,
+        adjective:"正義強、行動力高、情感深", 
+        quote:"我並非認為自己會贏才在戰鬥，而是因為非贏不可才會戰鬥。",
+        details:{gender:"男性", age:"27歲", status:"存活", job:"代理死神、翻譯家"}},
+  { name:"淀治（鏈鋸人）", image:"https://i.postimg.cc/5N48VtCN/08f1aa5a7200768f60db32eb95d6bdb8.jpg", 
+        traits:{personality:20,behavior:20.5,values:19}, 
+        analysis:"你聰明勇敢，願意為理想冒險，但在生活上可能比較慵懶，沒什麼衝勁。" ,
+        adjective:"隨心所欲", 
+        quote:"只要早午晚有三餐能吃，能睡覺能洗澡，就是最棒的人生了。",
+        details:{gender:"男性", age:"17歲", status:"存活", job:"公安惡魔獵人、鏈鋸人"}},
+  { name:"綠谷出久（我的英雄學院）", image:"https://i.postimg.cc/280h8fQG/d6e473e43ef5e90ad8d1fa2dbc60324d.jpg", 
+        traits:{personality:37.7,behavior:38.5,values:36}, 
+        analysis:"你勇敢、重視夥伴且對待任何人都很溫柔，不怕挑戰，擁有強烈責任感，直到達成目標之前都不會放棄。",
+        adjective:"理想主義者、重視目標、有責任感", 
+        quote:"愛多管閒事，也是英雄的本質。",
+        details:{gender:"男性", age:"16歲", status:"存活", job:"職業英雄、老師"} },
+  { name:"桐人（刀劍神域）", image:"https://i.postimg.cc/02k7sNwY/918fa7eca03bdcfcc76255cda0795fa7.jpg", 
+        traits:{personality:30,behavior:32.5,values:30}, 
+        analysis:"你冷靜、有智慧，注重夥伴關係與正義感，成為團隊裡不可或缺的角色。",
+        adjective:"獨行但重情、冷靜思考、擁有強烈責任感", 
+        quote:"我寧願相信後悔，也不願懷疑後悔。",
+        details:{gender:"男性", age:"18歲", status:"存活", job:"玩家、學生"} }
+];
+
+// ---------- 題目資料 ----------
+const questions = [
+  { text: "你認為團隊中最重要的是？",
+    options: [
+    { text: "信任與友情", score:{personality:3, behavior:3, values:4} },
+    { text: "效率與行動力", score:{personality:4, behavior:4, values:3} },
+    { text: "創意與自由", score:{personality:4, behavior:2, values:3} },
+    { text: "規則與紀律", score:{personality:2, behavior:4, values:3} }
+]
+  },
+  { text: "動漫角色在劇情中面臨著道德的選擇，你更希望他選擇？",
+    options: [
+    { text: "理性、利益最大化的解決方案", score:{personality:2, behavior:2, values:2} },
+    { text: "善良、保護情誼的解決方案", score:{personality:5, behavior:3, values:5} }
+]
+  },
+  { text: "你對朋友的態度是？",
+    options: [
+    { text: "即使朋友犯錯也會袒護他，願意為他付出一切", score:{personality:5, behavior:4, values:5*1.3} },
+    { text: "犯錯時會指責他，受到不公時會支持他", score:{personality:3, behavior:3, values:3} },
+    { text: "好或壞都不關我的事", score:{personality:1, behavior:1, values:1} },
+    { text: "他犯錯時會遠離他", score:{personality:2, behavior:2, values:2} }
+]
+  },
+  { text: "在團隊中發現有人犯錯，你會怎麼做？",
+    options: [
+    { text: "立刻指出，避免影響結果", score:{personality:4, behavior:5, values:4} },
+    { text: "私下提醒，保護對方面子", score:{personality:3, behavior:4, values:3} },
+    { text: "不指出，保持和諧", score:{personality:2, behavior:2, values:2} },
+    { text: "直接幫他修正錯誤，不去責怪", score:{personality:1, behavior:3, values:1} }
+]
+  },
+  { text: "遇到陌生人需要幫忙，你會怎麼做？",
+    options: [
+    { text: "主動提供幫助", score:{personality:4*1.3, behavior:5, values:4} },
+    { text: "觀察情況再決定", score:{personality:3, behavior:3, values:3} },
+    { text: "找藉口拒絕幫忙，避免麻煩", score:{personality:2, behavior:2, values:2} },
+    { text: "叫他問其他人", score:{personality:1, behavior:1, values:1} }
+]
+  },
+  { text: "要學習一種新技能，你會？",
+    options: [
+    { text: "馬上動手去實作", score:{personality:4, behavior:5*1.3, values:4} },
+    { text: "先研究背景知識再實作", score:{personality:3, behavior:4, values:4} },
+    { text: "請教已經會這項技能的人", score:{personality:3, behavior:3, values:5} },
+    { text: "隨意嘗試，會了就會了，不會就不會", score:{personality:1, behavior:2, values:1} }
+]
+  },
+  { text: "當要去做一項困難的任務時，你會？",
+    options: [
+    { text: "立即投入，不怕困難", score:{personality:5, behavior:5*1.3, values:4} },
+    { text: "仔細策劃後行動，避免風險", score:{personality:4, behavior:4, values:4} },
+    { text: "尋找夥伴共同完成", score:{personality:2, behavior:2, values:2} },
+    { text: "能不做就盡量不做", score:{personality:1, behavior:1, values:1} }
+]
+  },
+  { text: "失敗時你的反應？",
+    options: [
+    { text: "馬上重新開始", score:{personality:5, behavior:5*1.3, values:4} },
+    { text: "先分析原因，計畫下一步", score:{personality:4, behavior:4, values:4} },
+    { text: "尋求朋友安慰或建議", score:{personality:3, behavior:3, values:3} },
+    { text: "放鬆一下，等待心情恢復", score:{personality:2, behavior:1, values:2} }
+]
+  },
+  { text: "你的生活方式？",
+    options: [
+    { text: "積極熱血，期待每一天", score:{personality:5*1.3, behavior:4, values:5} },
+    { text: "喜歡做計畫，安排自己的每分每秒", score:{personality:1, behavior:1, values:1} },
+    { text: "稍微做規劃，但也喜歡享受隨機感", score:{personality:3, behavior:3, values:3} },
+    { text: "無所謂，隨緣，生活怎麼樣都沒差", score:{personality:2, behavior:2, values:2} }
+]
+  },
+  { text: "你對未來的態度？",
+    options: [
+    { text: "一定能夠達成目標", score:{personality:5, behavior:5*1.3, values:4} },
+    { text: "順其自然，享受成長的過程", score:{personality:4, behavior:4, values:4} },
+    { text: "我只在乎現在", score:{personality:1, behavior:2, values:1} },
+    { text: "恐懼未來的未知感", score:{personality:3, behavior:3, values:3} }
+]
+  }
+];
+
+// ---------- 變數 ----------
+let currentQ = 0;
+let answers = [];
+let selectedOptions = [];
+let lastProgress = 0;
+
+// ---------- 開始畫面 ----------
+function showStartScreen(){
+  const quizDiv = document.getElementById("quiz");
+  quizDiv.classList.add("fade-out");
+  setTimeout(() => {
+    quizDiv.innerHTML=`
+      <div class="card fade">
+        <h1>動漫人格測驗：你是哪位主角？</h1>
+        <p>結合心理測驗與動漫角色，看看你最像誰！</p>
+        <button class="start-btn" onclick="startQuiz()">開始測驗</button>
+        <p style="margin-top:20px; font-size:14px; color:#888;">此測驗僅供娛樂</p>
+      </div>
+    `;
+    quizDiv.classList.remove("fade-out");
+  }, 500);
+}
+
+// ---------- 開始測驗 ----------
+function startQuiz(){
+  currentQ=0;
+  answers=[];
+  selectedOptions = [];
+  lastProgress=0;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  const quizDiv = document.getElementById("quiz");
+  const targetPercent = ((currentQ) / questions.length) * 100;
+
+  quizDiv.innerHTML = `
+  <div class="question-card fade">
+    
+    <!-- 題目外框 -->
+    <div class="question-box">
+      <h2>${q.text}</h2>
+    </div>
+
+    <!-- 選項外框 -->
+    <div class="options-box">
+      ${q.options.map((opt, idx) => {
+        const isSelected = selectedOptions[currentQ] === idx 
+          ? "background-color:#c5c8ff; border-color:#2b2b6f;" 
+          : "";
+        return `<button class="option-btn" style="${isSelected}" onclick="handleAnswer(${idx})">${opt.text}</button>`;
+      }).join("")}
+    </div>
+
+    <!-- 進度條 -->
+    <div style="margin:40px auto 15px auto; width:80%; max-width:400px;"> 
+      <div style="width:100%; height:16px; background:#eee; border-radius:8px; overflow:hidden;">
+        <div id="question-progress" style="
+          width:${lastProgress}%; 
+          height:100%; 
+          background: linear-gradient(90deg, #5a67d8, #7f5af0);
+          border-radius:8px;
+          transition: width 0.5s ease-in-out;
+        "></div>
+      </div>
+      <p style="margin-top:8px; color:#666; font-size:14px;">題目 ${currentQ + 1} / ${questions.length}</p>
+    </div>
+
+    ${currentQ > 0 ? `<div style="margin-top:5px;"><button class="start-btn" onclick="goBack()">← 上一題</button></div>` : ""}
+  </div>
+  `;
+
+  const progressBar = document.getElementById("question-progress");
+  setTimeout(() => {
+    progressBar.style.width = targetPercent + "%";
+    lastProgress = targetPercent;
+  }, 50);
+}
+
+
+function handleAnswer(index){
+  selectedOptions[currentQ] = index;
+  answers.push(questions[currentQ].options[index].score);
+  currentQ++;
+  if(currentQ<questions.length) renderQuestion();
+  else showLoading();
+}
+
+function goBack(){
+  if(currentQ > 0){
+    currentQ--;
+    renderQuestion();
+  }
+}
+
+function calcTop3(avg){
+  const scored=characters.map(c=>{
+    const dx=avg.personality-c.traits.personality;
+    const dy=avg.behavior-c.traits.behavior;
+    const dz=avg.values-c.traits.values;
+    const dist=Math.sqrt(dx*dx+dy*dy+dz*dz);
+    return {...c,dist};
+  });
+  scored.sort((a,b)=>a.dist-b.dist);
+  const maxDist=scored[scored.length-1].dist;
+  return scored.slice(0,3).map(c=>({...c, similarity:Math.max(0,(100-(c.dist/maxDist*100))).toFixed(1)}));
+}
+
+function showResult() {
+  if(answers.length !== questions.length){
+    console.error("答案數量不對！", answers);
+    return;
+  }
+
+  const userTotal = answers.reduce((acc, cur) => ({
+  personality: acc.personality + cur.personality,
+  behavior: acc.behavior + cur.behavior,
+  values: acc.values + cur.values
+}), { personality: 0, behavior: 0, values: 0 });
+
+console.log("🧮 使用者總分：", userTotal);
+const top3 = calcTop3(userTotal);
+
+  const main = top3[0];
+
+  const quizDiv = document.getElementById("quiz");
+  quizDiv.innerHTML = `
+    <div class="result-card" style="opacity:0; transform:scale(0.8);">
+            <h1>與你相似的動漫角色是：</h1>
+            <h1><span style="
+  display:inline-block;
+  background:#1b08b1; 
+  color:#fff;
+  padding:10px 25px;
+  border-radius:15px;
+  font-size:32px;
+  margin:0 0 15px 0;
+  box-shadow:0 5px 15px rgba(90,103,216,0.3);
+">
+${main.name}
+</span></h1>
+
+</h1>
+  <img src="${main.image}" crossorigin="anonymous" style="width:100%; max-width:450px; height:auto; aspect-ratio:1.5/1; object-fit:cover; border-radius:5px; margin-bottom:10px;">
+
+            <p style="
+  font-size:18px; 
+  font-weight:bold; 
+  color:#2b2b6f; 
+  padding:10px; 
+  border-bottom: 2px solid #eee;
+  margin:0 0 10px 0; 
+  background: rgba(43,43,111,0.1); /* 深紫色半透明底色 */
+  border-radius:8px; /* 可選，加圓角更好看 */
+">
+  ${main.adjective || '無形容詞'}
+</p>
+
+
+            <blockquote style="
+  font-size:18px; 
+  color:#333; 
+  border-left: 4px solid #2b2b6f;
+  background:#f9f9f9;
+  padding:10px 15px;
+  border-radius:8px;
+  margin:10px 0;
+  text-align:left;
+">
+        <p style="margin-bottom:5px;">${main.quote || '無名言'}</p>
+        <footer style="font-size:14px; color:#999; text-align:right;">— (${main.name.split('（')[1].replace('）', '') || '動漫名稱'})</footer>
+      </blockquote>
+      
+<div style="
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 12px 25px;
+  justify-content: center;
+  margin:0 auto 15px auto;
+">
+  ${((details) => {
+    const purpleBg = "#5a67d8";
+    const createBorderTag = (label, value) => `
+      <div style="display:flex; height:40px; min-width:150px;">
+        <div style="
+          background:${purpleBg};
+          color:#fff;
+          padding:0 12px;
+          font-weight:bold;
+          font-size:16px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          border-top-left-radius:10px;
+          border-bottom-left-radius:10px;
+        ">
+          ${label}
+        </div>
+        <div style="
+          background:#fff;
+          color:${purpleBg};
+          border:2px solid ${purpleBg};
+          border-left:none;
+          padding:0 12px;
+          font-size:16px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          border-top-right-radius:10px;
+          border-bottom-right-radius:10px;
+        ">
+          ${value}
+        </div>
+      </div>
+    `;
+    return `
+      ${createBorderTag("性別", details.gender || '未知')}
+      ${createBorderTag("年齡", details.age || '未知')}
+      ${createBorderTag("狀態", details.status || '未知')}
+      ${createBorderTag("職業", details.job || '未知')}
+    `;
+  })(main.details)}
+</div>
+<!-- 新增分析區塊 -->
+<div style="
+  margin-top:25px;
+  background:#f8f9ff;
+  border-radius:15px;
+  padding:20px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.05);
+  text-align:left;
+">
+  <h3 style="
+    color:#2b2b6f;
+    font-size:20px;
+    margin-bottom:10px;
+  ">人格分析</h3>
+  <p style="
+    color:#555;
+    font-size:15px;
+    line-height:1.6;
+  ">${main.analysis || '暫無分析資料'}</p>
+</div>
+
+      
+            <hr>
+      <h1>其他相似角色</h1>
+      
+            
+      <div class="other-characters-container">
+${top3.slice(1).map(c => `
+  <div class="character other-card">
+    <img src="${c.image}" style="width:120px; height:120px; border-radius:15px; object-:cover; margin-bottom:10px;">
+    <h4 style="font-size:18px; margin-bottom:8px;">${c.name}</h4>
+    <div style="width:100%; background:#eee; border-radius:10px; height:16px; overflow:hidden; margin-bottom:5px;">
+      <div style="width:${c.similarity}%; height:100%; background: linear-gradient(90deg, #5a67d8, #7f5af0); border-radius:10px; transition: width 0.5s;"></div>
+    </div>
+    <p style="font-size:14px; color:#555;">相似度: ${c.similarity}%</p>
+  </div>
+`).join("")}
+</div>
+<div style="text-align:center; margin-top:30px; display:flex; justify-content:center; gap:15px;">
+  <button class="restart-btn" onclick="showStartScreen()">再測一次</button>
+  <button class="restart-btn" onclick="generateResultImage()">分享結果</button>
+</div>
+
+<!-- 新增畫布，用來生成圖片（隱藏） -->
+<canvas id="result-canvas" style="display:none;"></canvas>
+
+
+  `;
+
+  // 觸發動畫
+  const card = quizDiv.querySelector(".result-card");
+  setTimeout(() => { card.style.transition="all 0.8s"; card.style.opacity=1; card.style.transform="scale(1)"; }, 50);
+
+  // 其他角色依序淡入
+  const others = quizDiv.querySelectorAll(".character");
+  others.forEach((el,i)=>{
+    setTimeout(()=>{
+      el.style.transition="all 0.6s"; el.style.opacity=1; el.style.transform="scale(1)";
+    }, 300*i);
+  });
+
+  // restart 按鈕淡入
+  const restartBtn = quizDiv.querySelector(".restart-btn");
+  setTimeout(()=>{
+    restartBtn.style.transition="all 0.6s"; restartBtn.style.opacity=1; restartBtn.style.transform="translateY(0)";
+  }, 300*others.length + 300);
+}
+
+// 生成結果圖片
+async function generateResultImage() {
+  const card = document.querySelector(".result-card");
+
+  // 🔥 最關鍵：截圖前強制取消動畫 & 透明度
+  card.style.animation = "none";
+  card.style.opacity = "1";
+  card.style.transform = "none";
+
+  // 隱藏背景球（避免白霧）
+  const bgBalls = document.querySelectorAll(".bg-circle");
+  bgBalls.forEach(b => b.style.display = "none");
+
+  // 隱藏分享遮罩（避免全屏白框被截到）
+  const previewMask = document.getElementById("result-preview");
+  if (previewMask) previewMask.style.display = "none";
+
+  html2canvas(card, {
+    scale: 4,
+    backgroundColor: "#ffffff",
+    useCORS: true
+  }).then(canvasGenerated => {
+
+    // 截圖後還原背景球
+    bgBalls.forEach(b => b.style.display = "");
+
+    const dataURL = canvasGenerated.toDataURL("image/png");
+
+    // 建立預覽框
+    let previewContainer = document.getElementById("result-preview");
+    if (!previewContainer) {
+        previewContainer = document.createElement("div");
+        previewContainer.id = "result-preview";
+        previewContainer.style.position = "fixed";
+        previewContainer.style.top = "0";
+        previewContainer.style.left = "0";
+        previewContainer.style.width = "100%";
+        previewContainer.style.height = "100%";
+        previewContainer.style.background = "rgba(0,0,0,0.7)";
+        previewContainer.style.display = "flex";
+        previewContainer.style.flexDirection = "column";
+        previewContainer.style.justifyContent = "center";
+        previewContainer.style.alignItems = "center";
+        previewContainer.style.zIndex = "9999";
+        document.body.appendChild(previewContainer);
+    }
+
+    previewContainer.style.display = "flex";
+
+    previewContainer.innerHTML = `
+        <div style="background:#fff; padding:20px; border-radius:15px; text-align:center; max-width:90%; max-height:90%; overflow:auto;">
+            <img src="${dataURL}" style="max-width:100%; max-height:80vh; border-radius:10px; margin-bottom:15px;">
+            <div style="display:flex; justify-content:center; gap:15px;">
+                <button id="download-btn" style="padding:10px 20px; border:none; border-radius:10px; background:#5a67d8; color:#fff; font-size:16px; cursor:pointer;">下載圖片</button>
+                <button id="close-preview" style="padding:10px 20px; border:none; border-radius:10px; background:#aaa; color:#fff; font-size:16px; cursor:pointer;">關閉</button>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("download-btn").onclick = () => {
+        const a = document.createElement("a");
+        a.href = dataURL;
+        a.download = "動漫人格測驗結果.png";
+        a.click();
+    };
+
+    document.getElementById("close-preview").onclick = () => {
+        previewContainer.remove();
+    };
+  });
+}
+
+
+
+
+
+// 下載圖片函式
+function downloadResultImage(dataURL) {
+  const link = document.createElement("a");
+  link.href = dataURL;
+  link.download = "動漫人格測驗結果.png";
+  link.click();
+}
+
+
+
+function showLoading(){
+  const quizDiv = document.getElementById("quiz");
+  quizDiv.innerHTML = `
+    <div class="card" style="width:320px; max-width:90%;">
+      <h2>生成結果中...</h2>
+      <div style="width:100%; background:#eee; border-radius:12px; overflow:hidden; margin-top:20px;">
+        <div id="progress-bar" style="width:0%; height:20px; background:#5a67d8; transition: width 0.2s;"></div>
+      </div>
+    </div>
+  `;
+  let width = 0;
+  const totalDuration = 2000;
+  const stepTime = 20; 
+  const increment = 100 / (totalDuration / stepTime);
+  const interval = setInterval(()=>{
+    width += increment;
+    if(width > 100) width = 100;
+    document.getElementById("progress-bar").style.width = width + "%";
+    if(width >= 100){ clearInterval(interval); showResult(); }
+  }, stepTime);
+}
+
+// ---------- 初始化 ----------
+showStartScreen();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,1176 @@
+/* ===============================
+   全域設定與變數
+   =============================== */
+:root {
+    /* 基礎配色 */
+    --color-bg: #0a0a0f;
+    --color-text: #f0f0f5;
+    --color-text-dim: #a0a0b0;
+    --color-mirror: #1a1a2e;
+    --color-glow: rgba(255, 255, 255, 0.1);
+
+    /* 人格配色 */
+    --color-observer: #4a90e2;
+    --color-escapist: #8b7fc7;
+    --color-guardian: #e85d4e;
+    --color-witness: #e0e0e0;
+
+    /* 動畫參數 */
+    --transition-smooth: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* 字體 */
+    --font-serif: 'Noto Serif TC', serif;
+    --font-sans: 'Noto Sans TC', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-text);
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+html {
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ===============================
+   場景切換系統
+   =============================== */
+.scene {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s;
+    overflow: hidden;
+    touch-action: pan-y pinch-zoom;
+}
+
+.scene.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ===============================
+   首頁 Intro Scene
+   =============================== */
+#intro-scene {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+}
+
+.mirror-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.mirror-frame {
+    width: 400px;
+    height: 600px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-radius: 200px 200px 0 0;
+    box-shadow:
+        0 0 40px rgba(255, 255, 255, 0.1),
+        inset 0 0 60px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.mirror-surface {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.02) 50%,
+        rgba(0, 0, 0, 0.3) 100%);
+    position: relative;
+    animation: mirrorPulse 4s ease-in-out infinite;
+}
+
+.mirror-reflection {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 70%);
+    animation: reflectionShimmer 3s ease-in-out infinite;
+}
+
+.mirror-shadow {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+    background: radial-gradient(ellipse at center,
+        rgba(100, 100, 150, 0.3) 0%,
+        transparent 60%);
+    filter: blur(30px);
+    animation: shadowMove 6s ease-in-out infinite;
+    opacity: 0;
+}
+
+@keyframes mirrorPulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+@keyframes reflectionShimmer {
+    0%, 100% { transform: translateY(-10px); opacity: 0.5; }
+    50% { transform: translateY(10px); opacity: 0.8; }
+}
+
+@keyframes shadowMove {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.2);
+    }
+}
+
+.intro-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 600px;
+    padding: 0 20px;
+}
+
+.title {
+    font-family: var(--font-serif);
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, #a0a0b0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.1em;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--color-text-dim);
+    margin-bottom: 3rem;
+    letter-spacing: 0.3em;
+}
+
+.description {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+    opacity: 0.9;
+}
+
+/* 淡入動畫 */
+.fade-in {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.fade-in-delay-1 {
+    animation: fadeIn 1s ease-out 0.3s forwards;
+    opacity: 0;
+}
+
+.fade-in-delay-2 {
+    animation: fadeIn 1s ease-out 0.6s forwards;
+    opacity: 0;
+}
+
+.fade-in-delay-3 {
+    animation: fadeIn 1s ease-out 0.9s forwards;
+    opacity: 0;
+}
+
+.fade-in-delay-4 {
+    animation: fadeIn 1s ease-out 1.2s forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 按鈕樣式 */
+.btn-primary {
+    margin-top: 2rem;
+    padding: 1.2rem 3rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-primary:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px);
+}
+
+/* 粒子效果 */
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.particles::before,
+.particles::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: particleFloat 8s infinite ease-in-out;
+}
+
+.particles::before {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.particles::after {
+    top: 60%;
+    right: 15%;
+    animation-delay: 3s;
+}
+
+@keyframes particleFloat {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(50px);
+        opacity: 0;
+    }
+}
+
+/* ===============================
+   測驗頁面 Question Scene
+   =============================== */
+#question-scene {
+    background: linear-gradient(135deg, #0a0a0f 0%, #16161f 100%);
+    display: flex;
+}
+
+.question-mirror {
+    flex: 0 0 35%;
+    position: relative;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mirror-left {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* 鏡子圖標 */
+.mirror-icon {
+    width: 120px;
+    height: 180px;
+    margin-bottom: 1.5rem;
+    animation: mirrorFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 5px 15px rgba(255, 255, 255, 0.2));
+}
+
+@keyframes mirrorFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 鏡中倒影效果 */
+.mirror-reflection-container {
+    width: 100%;
+    max-width: 280px;
+    height: 320px;
+    margin-bottom: 2rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mirror-silhouette {
+    position: relative;
+    width: 180px;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 模糊的人形倒影 */
+.mirror-silhouette::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse 40% 25% at 50% 25%,
+                rgba(255, 255, 255, 0.15) 0%,
+                rgba(255, 255, 255, 0.08) 30%,
+                transparent 60%),
+                radial-gradient(ellipse 50% 35% at 50% 55%,
+                rgba(200, 220, 255, 0.12) 0%,
+                rgba(150, 180, 255, 0.06) 40%,
+                transparent 70%);
+    filter: blur(25px);
+    animation: silhouetteBreathe 4s ease-in-out infinite;
+}
+
+/* 光暈效果 */
+.silhouette-glow {
+    position: absolute;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(ellipse at center,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(150, 180, 230, 0.05) 30%,
+                transparent 60%);
+    filter: blur(30px);
+    animation: glowPulse 3s ease-in-out infinite alternate;
+}
+
+/* 陰影效果 */
+.silhouette-shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse 45% 30% at 50% 60%,
+                rgba(100, 120, 180, 0.15) 0%,
+                rgba(80, 100, 160, 0.08) 40%,
+                transparent 70%);
+    filter: blur(20px);
+    animation: shadowShift 5s ease-in-out infinite;
+}
+
+@keyframes silhouetteBreathe {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.85;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes glowPulse {
+    0% {
+        opacity: 0.3;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes shadowShift {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.4;
+    }
+    50% {
+        transform: translateY(-5px) scale(1.1);
+        opacity: 0.7;
+    }
+}
+
+/* 心靈小語區域 */
+.quote-section {
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    margin-bottom: 2rem;
+    max-width: 90%;
+    animation: quoteAppear 0.8s ease-out;
+}
+
+@keyframes quoteAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.question-title {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+}
+
+.question-quote {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+}
+
+.mirror-effect {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background:
+        linear-gradient(135deg,
+            rgba(255, 255, 255, 0.03) 0%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.05) 100%),
+        radial-gradient(ellipse at 30% 40%,
+            rgba(100, 150, 255, 0.1) 0%,
+            transparent 60%);
+    animation: mirrorDistort 3s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.mirror-effect::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: radial-gradient(circle,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%);
+    animation: mirrorRotate 10s linear infinite;
+}
+
+@keyframes mirrorDistort {
+    0%, 100% { filter: blur(20px) brightness(1); }
+    50% { filter: blur(25px) brightness(1.2); }
+}
+
+@keyframes mirrorRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.question-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem;
+    position: relative;
+}
+
+.progress-bar {
+    position: absolute;
+    top: 2rem;
+    left: 4rem;
+    right: 4rem;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg,
+        var(--color-observer) 0%,
+        var(--color-escapist) 50%,
+        var(--color-guardian) 100%);
+    transition: width 0.6s ease;
+    width: 0%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.progress-text {
+    position: absolute;
+    top: 1.5rem;
+    right: 0;
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+}
+
+.question-text {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    text-shadow: 0 2px 20px rgba(255, 255, 255, 0.1);
+    animation: questionAppear 0.6s ease-out;
+}
+
+@keyframes questionAppear {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.option-btn {
+    padding: 1.5rem 2rem;
+    font-size: 1.1rem;
+    text-align: left;
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.option-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent);
+    transition: left 0.6s;
+}
+
+.option-btn:hover::before {
+    left: 100%;
+}
+
+.option-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateX(10px);
+    box-shadow:
+        -5px 0 20px rgba(255, 255, 255, 0.2),
+        0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+.option-btn.selected {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.7);
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+    }
+}
+
+/* ===============================
+   結果頁面 Result Scene
+   =============================== */
+#result-scene {
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shatter-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.shatter-overlay.active {
+    animation: shatterEffect 1.5s ease-out forwards;
+}
+
+@keyframes shatterEffect {
+    0% {
+        opacity: 1;
+        background:
+            linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.8) 49%, rgba(255, 255, 255, 0.8) 51%, transparent 52%),
+            linear-gradient(-45deg, transparent 48%, rgba(255, 255, 255, 0.8) 49%, rgba(255, 255, 255, 0.8) 51%, transparent 52%);
+        background-size: 20px 20px;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
+
+.result-container {
+    max-width: 900px;
+    padding: 3rem;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    animation: resultAppear 1s ease-out 0.5s backwards;
+}
+
+@keyframes resultAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.result-symbol {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 2rem;
+    animation: symbolRotate 2s ease-out;
+}
+
+@keyframes symbolRotate {
+    from {
+        transform: rotate(-180deg) scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: rotate(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.result-title {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, var(--result-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.result-keyword {
+    font-size: 1.3rem;
+    color: var(--result-color);
+    margin-bottom: 2rem;
+    letter-spacing: 0.3em;
+    opacity: 0.9;
+}
+
+.result-description,
+.result-shadow {
+    font-size: 1.2rem;
+    line-height: 2;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.result-shadow {
+    font-style: italic;
+    color: var(--color-text-dim);
+}
+
+.result-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.btn-share,
+.btn-retry,
+.btn-home {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-share {
+    color: #fff;
+    background: linear-gradient(135deg, var(--result-color) 0%, rgba(255, 255, 255, 0.3) 100%);
+    border: none;
+}
+
+.btn-share:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.btn-retry {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-retry:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-3px);
+}
+
+.btn-home {
+    color: var(--color-text);
+    background: rgba(74, 144, 226, 0.15);
+    border: 2px solid rgba(74, 144, 226, 0.5);
+}
+
+.btn-home:hover {
+    background: rgba(74, 144, 226, 0.25);
+    border-color: rgba(74, 144, 226, 0.7);
+    transform: translateY(-3px);
+}
+
+/* 漂浮粒子 */
+.floating-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.floating-particles::before,
+.floating-particles::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--result-color);
+    border-radius: 50%;
+    animation: floatUp 6s infinite ease-in-out;
+    opacity: 0.6;
+}
+
+.floating-particles::before {
+    bottom: -10px;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.floating-particles::after {
+    bottom: -10px;
+    right: 30%;
+    animation-delay: 2s;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-100vh) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Toast 提示訊息動畫 */
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes toastOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
+/* ===============================
+   響應式設計 (RWD)
+   =============================== */
+@media (max-width: 1024px) {
+    .title {
+        font-size: 3rem;
+    }
+
+    .question-content {
+        padding: 3rem 2rem;
+    }
+
+    .progress-bar {
+        left: 2rem;
+        right: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    /* 修正手機版滾動問題 - 改用 absolute 定位 */
+    body {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .scene {
+        position: absolute;
+        overflow-y: visible;
+        overflow-x: hidden;
+        height: auto;
+        min-height: 100vh;
+        -webkit-overflow-scrolling: touch; /* iOS 平滑滾動 */
+        touch-action: pan-y pan-x pinch-zoom; /* 允許觸控滾動 */
+        will-change: transform; /* 優化渲染效能 */
+    }
+
+    /* 確保首頁在手機上可以滾動 */
+    #intro-scene {
+        align-items: flex-start;
+        padding-top: 10vh;
+        padding-bottom: 5vh;
+    }
+
+    /* 確保結果頁在手機上可以滾動 */
+    #result-scene {
+        align-items: flex-start;
+        padding: 2rem 0;
+        min-height: auto;
+    }
+
+    #question-scene {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .question-mirror {
+        flex: 0 0 auto;
+        min-height: 300px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mirror-left {
+        padding: 1.5rem 1rem;
+    }
+
+    .mirror-icon {
+        width: 80px;
+        height: 120px;
+        margin-bottom: 1rem;
+    }
+
+    .mirror-reflection-container {
+        max-width: 200px;
+        height: 240px;
+        margin-bottom: 1.5rem;
+    }
+
+    .mirror-silhouette {
+        width: 140px;
+        height: 220px;
+    }
+
+    .quote-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .question-title {
+        font-size: 0.85rem;
+        margin-bottom: 0.7rem;
+    }
+
+    .question-quote {
+        font-size: 0.8rem;
+        line-height: 1.6;
+    }
+
+    .question-content {
+        padding: 2rem 1.5rem;
+    }
+
+    .progress-bar {
+        left: 1.5rem;
+        right: 1.5rem;
+    }
+
+    .question-text {
+        font-size: 1.5rem;
+    }
+
+    .mirror-frame {
+        width: 300px;
+        height: 450px;
+    }
+
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .result-container {
+        padding: 2rem 1.5rem;
+    }
+
+    .result-title {
+        font-size: 2.2rem;
+    }
+
+    .result-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    /* 確保極小螢幕也能滾動 */
+    body {
+        overflow-y: auto;
+        height: auto;
+    }
+
+    .scene {
+        position: absolute;
+        overflow-y: visible;
+        overflow-x: hidden;
+        height: auto;
+        min-height: 100vh;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y pan-x pinch-zoom;
+        will-change: transform;
+    }
+
+    /* 調整內容間距避免貼邊 */
+    #intro-scene {
+        padding: 5vh 1rem;
+        padding-bottom: 5vh;
+    }
+
+    #result-scene {
+        padding: 1.5rem 0 3rem 0;
+        min-height: auto;
+    }
+
+    #question-scene {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .result-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .description {
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+
+    .mirror-frame {
+        width: 250px;
+        height: 375px;
+    }
+
+    .question-mirror {
+        min-height: 250px;
+    }
+
+    .mirror-icon {
+        width: 60px;
+        height: 90px;
+        margin-bottom: 0.8rem;
+    }
+
+    .mirror-reflection-container {
+        max-width: 160px;
+        height: 200px;
+        margin-bottom: 1rem;
+    }
+
+    .mirror-silhouette {
+        width: 110px;
+        height: 180px;
+    }
+
+    .quote-section {
+        padding: 0.8rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .question-title {
+        font-size: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .question-quote {
+        font-size: 0.7rem;
+        line-height: 1.5;
+    }
+
+    .question-text {
+        font-size: 1.3rem;
+    }
+
+    .option-btn {
+        padding: 1.2rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .result-symbol {
+        width: 150px;
+        height: 150px;
+    }
+
+    .result-title {
+        font-size: 1.8rem;
+    }
+
+    .result-keyword {
+        font-size: 1rem;
+    }
+
+    .result-description,
+    .result-shadow {
+        font-size: 1rem;
+    }
+}

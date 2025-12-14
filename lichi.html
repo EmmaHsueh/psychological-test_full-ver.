@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>韓國宮廷漫畫轉生測驗</title>
+  <style>
+    :root{
+    --bg: #1a0b2e; 
+    --card: #ffffff;
+    --accent: #bfa5ff; 
+    --accent-600: #9a7bff;
+    --text: #2b2b2b;
+    --muted: #6b6b6b;
+    --shadow: 0 8px 24px rgba(0,0,0,0.3);
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans TC', sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+    margin:0;
+    background: linear-gradient(180deg, #2d1b4e 0%, #1a0b2e 100%);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative; 
+    overflow-x: hidden; 
+    }
+
+  .wrap{
+    width: 100%;
+    max-width: 820px;
+    background: var(--card);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(140,110,255,0.06);
+    position: relative; 
+    z-index: 10; 
+    }
+    .particle {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    pointer-events: none; 
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.6); 
+    z-index: 1; 
+    }
+    @keyframes float-glow {
+    0% {
+      opacity: 0;
+      transform: translateY(0) scale(0.5);
+    }
+    50% {
+      opacity: 0.8;
+      transform: translateY(-20px) scale(1.2);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-40px) scale(0.5);
+    }
+   }
+    header{display:flex;gap:16px;align-items:center;margin-bottom:12px}
+    .logo{
+      width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--accent-600));color:white;font-weight:700;font-size:20px;box-shadow:0 6px 18px rgba(154,123,255,0.18);
+      overflow: hidden; 
+      padding: 0;}
+    .logo img {width: 100%;height: 100%;object-fit: cover;display: block}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+    .card{background:linear-gradient(180deg,#fff, #fbfaff);padding:18px;border-radius:12px;margin-top:18px;border:1px solid rgba(150,120,255,0.04)}
+
+    .progress{height:10px;background:rgba(0,0,0,0.06);border-radius:999px;overflow:hidden;margin-bottom:14px}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-600));width:0%;transition:width .35s ease}
+
+    .question{font-size:18px;margin:6px 0 12px}
+    .options{display:grid;grid-template-columns:1fr;gap:10px}
+    @media(min-width:640px){.options{grid-template-columns:1fr 1fr}}
+
+    .opt{background:#fff;border:1px solid rgba(160,130,255,0.12);padding:12px;border-radius:10px;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease}
+    .opt:hover{transform:translateY(-4px);box-shadow:0 8px 18px rgba(140,110,255,0.08)}
+    .opt.selected{border-color:var(--accent-600);box-shadow:0 10px 26px rgba(154,123,255,0.12);transform:translateY(-6px)}
+
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+    button{background:var(--accent-600);border:none;color:white;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+    button.ghost{background:transparent;color:var(--accent-600);border:1px solid rgba(154,123,255,0.14)}
+    button.share-action {
+      display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 8px; font-size: 15px;
+    }
+    button.share-fb { background: #1877F2; color: white; border: none; }
+    button.share-line { background: #06C755; color: white; border: none; }
+    button.share-copy { background: #555; color: white; border: none; }
+
+    a.button{
+      background:var(--accent-600);border:none;color:white;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;
+      text-decoration: none; 
+      text-align: center;
+      display: inline-block;
+    }
+
+    .result { 
+      display: block; 
+    }
+    .result-content {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start; 
+      margin-bottom: 16px;
+    }
+    .role-media {
+      flex-shrink: 0; 
+      width: 140px; 
+      height: 190px;
+      background: #f0f0f0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .role-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .role-info {
+      flex-grow: 1;
+    }
+    
+    .role-title{font-size:22px;font-weight:700;margin-top:20px;}
+    .role-desc{
+      color:var(--muted);
+      margin-top:4px;
+      font-size:17px; 
+    }
+    
+    .trait-list{display:flex;gap:8px;flex-wrap:wrap}
+    .trait-pill{background:linear-gradient(90deg,#fff,#fbfaff);padding:6px 10px;border-radius:999px;border:1px solid rgba(150,120,255,0.06);font-weight:600}
+
+    footer {
+    margin-top: 12px;
+    text-align: center;
+    color: rgba(255,255,255,0.6); 
+    font-size: 13px;
+    position: relative;
+    z-index: 10;
+    }
+
+    .btn-group {
+      display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;
+    }
+
+    .home-btn {
+      position: fixed; 
+      top: 24px;
+      left: 24px;
+      z-index: 100; 
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.1); 
+      border: 1px solid rgba(255, 255, 255, 0.2); 
+      border-radius: 30px; 
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      backdrop-filter: blur(4px); 
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .home-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px); 
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    .home-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor; 
+    }
+
+    @media(max-width: 640px) {
+      body {
+        padding: 16px; 
+      }
+      .wrap {
+        padding: 18px; 
+      }
+
+      header {
+        flex-direction: column; 
+        align-items: flex-start; 
+        gap: 8px; 
+      }
+      .logo {
+        width: 48px; 
+        height: 48px;
+        border-radius: 8px; 
+        box-shadow: 0 4px 12px rgba(154,123,255,0.12);
+      }
+      h1 {
+        font-size: 18px; 
+      }
+      p.lead {
+        font-size: 12px; 
+      }
+
+      .question {
+        font-size: 16px;
+      }
+
+      .options {
+        grid-template-columns: 1fr;
+      }
+      .opt {
+        padding: 14px; 
+        font-size: 14px;
+      }
+      .opt:hover, .opt.selected {
+        transform: none; 
+        box-shadow: 0 4px 12px rgba(154,123,255,0.1); 
+      }
+
+      .result-content {
+        flex-direction: column; 
+        align-items: center;
+        text-align: center;
+        gap: 12px; 
+      }
+      .role-media {
+        width: 120px; 
+        height: 160px;
+        margin-top: 10px; 
+      }
+      .role-info {
+        text-align: center;
+      }
+      .role-title {
+        font-size: 20px;
+        margin-top: 8px;
+      }
+      .role-desc {
+        font-size: 15px; 
+      }
+      
+      .meta, .result > div:nth-of-type(2) { 
+        flex-direction: column;
+        gap: 8px;
+      }
+      .meta > div:last-child {
+        display: flex;
+        gap: 8px;
+        width: 100%;
+      }
+      .btn-group button, .btn-group a.button {
+        flex: 1;
+        width: auto;
+        min-width: 120px;
+      }
+      .btn-group {
+         flex-direction: row;
+         justify-content: space-between;
+      }
+
+      [style*="position:fixed"] {
+          align-items: flex-start;
+          padding: 0;
+      }
+      [style*="position:fixed"] > div { 
+        border-radius: 0;
+        max-width: 100%;
+        width: 100%;
+        max-height: 100vh;
+        height: 100%;
+        padding: 18px;
+      }
+      [style*="position:fixed"] > div h3 {
+        font-size: 18px;
+      }
+      [style*="position:fixed"] > div button {
+        width: auto;
+      }
+      .home-btn {
+        top: 12px;
+        left: 12px;
+        padding: 6px 12px;
+        font-size: 13px;
+      }
+    }
+    .options.compact {
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    @media(min-width: 640px){
+      .options.compact {
+        grid-template-columns: 1fr 1fr 1fr 1fr; 
+      }
+    }
+
+    .options.compact .opt {
+      padding: 10px 4px; 
+      font-size: 14px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%; 
+    }
+  </style>
+</head>
+<body>
+  <a href="https://psychological-test-full-ver.onrender.com" class="home-btn" aria-label="回首頁">
+  <svg viewBox="0 0 24 24">
+    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+  回首頁
+  </a>
+  <div class="wrap" role="application">
+    <header>
+      <div class="logo"><img src="images/logo_img.jpg" alt="Logo"></div>
+
+      <div>
+        <h1>韓國宮廷漫畫轉生測驗</h1>
+        <p class="lead">如果哪天意外穿越到宮廷漫畫裡，你最像誰？</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+
+      <div id="mainArea">
+      </div>
+
+      <div class="meta">
+        <div id="qinfo" style="color:var(--muted)"></div>
+        <div>
+          <button id="prevBtn" class="ghost">上一步</button>
+          <button id="nextBtn">下一題</button>
+        </div>
+      </div>
+    </div>
+
+    <footer> © <span id="year"></span> copyright by Lechi.S</footer>
+  </div>
+
+  <script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+    const questions = [
+        { 
+          text: "在測驗開始前，憑直覺猜猜看你覺得自己會是哪一種角色？",
+          options: [
+            { text: "佩妮洛普(智力代表)", points: {} },
+            { text: "蕾奧妮(武力代表)", points: {} },
+            { text: "賽琳娜(演技代表)", points: {} },
+            { text: "雷普莉(搞笑代表)", points: {} },
+            { text: "赫斯提雅(堅決代表)", points: {} },
+            { text: "伊迪絲(溫柔代表)", points: {} },
+            { text: "黛寶拉(瘋癲代表)", points: {} },
+            { text: "娜美亞(鈍感代表)", points: {} }
+          ]
+        },
+        { text: "請問你在現代的忙碌程度是？",
+          options: [
+            { text: "每天都很忙", points: { 智力: 1 } },
+            { text: "一天到晚躺在床上", points: { 鈍感: 1 } },
+            { text: "休息與忙碌並進", points: { 瘋度: 1} },
+            { text: "我不太了解自己", points: { 搞笑: 1 } }
+          ]},
+        { text: "某天一睜開眼，你發現自己在歐式風格的房間中醒來，甚至還穿著絲綢連身睡衣，你的反應是？",
+          options: [
+            { text: "跑到鏡子前看自己長怎樣", points: { 演技: 1, 堅決: 2, 搞笑: 1 } },
+            { text: "叫僕人過來，問他現在的背景", points: { 智力: 1, 溫柔: 2 } },
+            { text: "還很睏，先再躺一下", points: { 鈍感: 2, 智力: -2} },
+            { text: "好奇地衝出房間，把每個角落都看一次", points: { 瘋度: 2, 搞笑: 2 } }
+          ]},
+        { text: "後來發現原來自己真的穿越到了宮廷漫畫中，你的反應是？",
+          options: [
+            { text: "失魂落魄的待在房內", points: { 堅決: -2, 鈍感: 1 } },
+            { text: "對未來的生活感到很好奇", points: { 鈍感: 1, 堅決: 2 } },
+            { text: "試圖尋找可以回去的方法", points: { 智力: 2 } },
+            { text: "看一下現在的自己有什麼樣的技能", points: { 武力: 2, 演技: 2 } }
+          ]},
+        { text: "由於你看過太多宮廷漫畫，導致你記不起來現在身在哪個漫畫中，首先你會想做什麼事情？",
+          options: [
+            { text: "好不容易可以當貴族千金當然是在家躺平", points: { 鈍感: 2, 智力: -2 } },
+            { text: "雖然家族很有錢了，但以防萬一還是來賺自己的錢好了", points: { 溫柔: 2, 武力: 2, 堅決: 2 } },
+            { text: "參加各種茶會、宴會，打聽屬於這個世界的情報", points: { 智力: 2, 演技: 2, 武力: 1 } },
+            { text: "體驗一下「幫我從這裡到那裡全包了！」這句話", points: { 瘋度: 2, 搞笑: 2, 演技: 1 } }
+          ]},
+        { text: "意識到是真的穿越了之後，你認為你的行為和個性會產生什麼樣的改變？",
+          options: [
+            { text: "努力適應他們的禮儀和價值觀", points: { 溫柔: 1, 演技: 2, 智力: 1, 堅決: 1 } },
+            { text: "對其他人還是像在現代一樣大喇喇的", points: { 瘋度: 2, 鈍感: 2, 搞笑: 2, 演技: -2 } },
+            { text: "開始很謹慎、疑神疑鬼地", points: { 瘋度: 2, 武力: 2 } },
+            { text: "對這個世界提不起勁，很憂鬱", points: { 堅決: -1, 瘋度: 1 } }
+          ]},
+        { text: "得知原身體主人有一個渣男未婚夫，礙於家族壓力必須結婚，你會？",
+          options: [
+            { text: "去情報公會調查他都做了什麼", points: { 智力: 2 } },
+            { text: "對他愛理不理，採取消極態度", points: { 溫柔: 1, 鈍感: 1 } },
+            { text: "做一些他討厭的事", points: { 瘋度: 2, 武力: 1, 溫柔: -2 } },
+            { text: "逃離原家族到遠方生活", points: { 堅決: 2, 瘋度: 1 } }
+          ]},
+        { text: "在宮廷宴會中，你最關心的事情是？",
+          options: [
+            { text: "我的朋友們在聊什麼天", points: { 演技: 2, 溫柔: 2 } },
+            { text: "公爵大人還是一如往常地帥氣", points: { 鈍感: 2 , 搞笑: 3 } },
+            { text: "今天有什麼甜點", points: { 搞笑: 2 } },
+            { text: "南方商會最近的資金流向", points: { 智力: 2, 鈍感: -1 } }
+          ]},
+        { text: "參加茶會時，發現原身體主人的好朋友居然反派角色之一，你會？",
+          options: [
+            { text: "把她變成自己真正的好閨蜜", points: { 演技: 2, 溫柔: 1 } },
+            { text: "不跟任何人交際，專心吃甜點", points: { 鈍感: 2, 搞笑: 1, 智力: -1 } },
+            { text: "去找比較邊緣的千金們聊天", points: { 溫柔: 2, 演技: -1 } },
+            { text: "對她和她周遭的人挑撥離間", points: { 智力: 2, 瘋度: 1 } }
+          ]},
+        { text: "偶然聽到僕人們說起原身體主人的壞話，你會？",
+          options: [
+            { text: "現身並跟他們理性解釋", points: { 智力: 1, 溫柔: 2, 演技: 1 } },
+            { text: "沉默但之後行動證明一切", points: { 堅決: 2, 智力:1, 溫柔: 2 } },
+            { text: "用金錢安撫大家，也當封口費", points: { 演技: 1, 溫柔: 2, 搞笑: 1 } },
+            { text: "把說壞話的人都直接解決掉", points: { 瘋度: 2, 武力: 2, 堅決: 1} }
+          ]},
+        { text: "如果有一個可以跟超帥公爵認識的契機，你覺得是？",
+          options: [
+            { text: "宮廷宴會上偶然聊起工作內容", points: { 智力: 2, 演技: 1 } },
+            { text: "發現情報公會的會長是公爵本人", points: { 鈍感: 2, 演技: 1 } },
+            { text: "不是契機，是主動找公爵契約結婚", points: { 堅決: 2 } },
+            { text: "剛開始穿越的時候就是躺在公爵家的床上", points: { 搞笑: 2, 瘋度: 1, 智力: -2 } }
+          ]},
+        { text: "假設你現在有一筆資金，可以選擇投資在一個地方，你會選擇？",
+          options: [
+            { text: "家中的圖書館", points: { 智力: 2, 溫柔: 1 } },
+            { text: "你培養的情報公會", points: { 智力: 1, 演技: 2, 瘋度: 1, 武力: 1 } },
+            { text: "你培養的商會", points: { 智力: 1, 堅決: 1, 溫柔: 2 } },
+            { text: "家族的騎士團", points: { 武力: 2, 瘋度: 1 } }
+          ]},
+        { text: "你希望在穿越後可以為為自己、朋友或是這個世界帶來什麼樣的改變？",
+          options: [
+            { text: "協助好的領導者登基，讓民眾安居樂業", points: { 智力: 2, 武力: 2, 堅決: 1 } },
+            { text: "成為家主，帶領家族走向繁榮", points: { 武力: 2, 堅決: 2, 溫柔: 1 } },
+            { text: "我都自顧不暇了，顧好自己就好", points: { 瘋度: 2, 鈍感: 2, 搞笑: 2, 智力: -2 } },
+            { text: "跟大家好好相處，成為社交之花", points: { 溫柔: 2, 演技: 2, 搞笑: 1 } }
+          ]}
+    ];
+
+    let current = 0;
+    const traits = { 智力: 0, 堅決: 0, 溫柔: 0, 武力: 0, 演技: 0, 瘋度: 0, 鈍感: 0, 搞笑: 0 };
+
+    // 儲存使用者答案的 index
+    const answers = Array(questions.length).fill(null);
+
+    const mainArea = document.getElementById('mainArea');
+    const prog = document.getElementById('prog');
+    const qinfo = document.getElementById('qinfo');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function renderQuestion(idx){
+      const q = questions[idx];
+      qinfo.textContent = `第 ${idx+1} / ${questions.length} 題`;
+      prog.style.width = `${Math.round(((idx)/questions.length)*100)}%`;
+
+      const gridClass = q.options.length > 4 ? 'options compact' : 'options';
+      let html = `\n        <div class=\"question\">${q.text}</div>\n        <div class=\"${gridClass}\">`;
+
+      q.options.forEach((opt, i)=>{
+        const sel = answers[idx] === i ? 'selected' : '';
+        html += `<div class=\"opt ${sel}\" data-i=\"${i}\">${opt.text}</div>`;
+      });
+      html += `</div>`;
+
+      mainArea.innerHTML = html;
+
+      // 綁定點擊
+      mainArea.querySelectorAll('.opt').forEach(el => {
+        el.addEventListener('click', ()=>{
+          const i = Number(el.getAttribute('data-i'));
+          // 記錄答案（允許變更）
+          answers[idx] = i;
+          // 更新選取樣式
+          mainArea.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+          el.classList.add('selected');
+        });
+      });
+
+      prevBtn.disabled = idx === 0;
+      nextBtn.textContent = idx === questions.length - 1 ? '看結果' : '下一題';
+      prevBtn.style.display = ''; 
+    }
+
+    prevBtn.addEventListener('click', ()=>{
+      if(current>0){ current--; renderQuestion(current); }
+    });
+
+    nextBtn.addEventListener('click', ()=>{
+      if(answers[current] === null){
+        alert('請先選擇本題的答案才能繼續！');
+        return; 
+      }
+      
+      if(current < questions.length -1){
+        current++; renderQuestion(current);
+      } else {
+        computeResult();
+      }
+    });
+
+    function computeResult(){
+      Object.keys(traits).forEach(k=>traits[k]=0);
+
+      answers.forEach((ansIdx, qIdx)=>{
+        if(ansIdx === null) return; // 跳過未答題
+        const pts = questions[qIdx].options[ansIdx].points || {};
+        Object.keys(pts).forEach(tr => {
+          if(traits[tr] !== undefined) traits[tr] += pts[tr];
+        });
+      });
+
+      let maxScore = 0;
+      Object.keys(traits).forEach(k => {
+        if (traits[k] > maxScore) {
+          maxScore = traits[k];
+        }
+      });
+
+      let tiedTraits = [];
+      Object.keys(traits).forEach(k => {
+        if (traits[k] === maxScore) {
+          tiedTraits.push(k);
+        }
+      });
+
+      const order = ['智力','演技','堅決','溫柔','瘋度','鈍感','武力','搞笑']; 
+      let topTrait = tiedTraits[0]; 
+
+      for (const priorityTrait of order) {
+        if (tiedTraits.includes(priorityTrait)) {
+          topTrait = priorityTrait;
+          break; 
+        }
+      }
+
+      tiedTraits.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+
+      let maxPossibleScore = 0;
+      
+      questions.forEach(q => {
+        let maxPointInQuestion = 0;
+        q.options.forEach(opt => {
+          const p = (opt.points && opt.points[topTrait]) ? opt.points[topTrait] : 0;
+          if (p > maxPointInQuestion) {
+            maxPointInQuestion = p;
+          }
+        });
+        maxPossibleScore += maxPointInQuestion;
+      });
+
+      if (maxPossibleScore <= 0) maxPossibleScore = 1;
+      
+      let similarity = Math.round((traits[topTrait] / maxPossibleScore) * 100);
+  
+      if (similarity > 100) similarity = 100;
+      if (similarity < 0) similarity = 0;
+
+      showResult(topTrait, tiedTraits, similarity);
+    }
+
+    function showResult(topTrait, tiedTraits, similarity){
+      const roles = {
+        智力: { title:'反派角色只有死亡結局-佩妮洛普(智力代表)', image:'https://ppt.cc/fywHfx@jpg', link:'', desc:'你如同佩妮洛普般機智過人，陰謀與計畫都難不倒你，是宮內外的謀略代表，但也要小心過於聰明可能會樹大招風。' },
+        武力: { title:'我成為了男主的養女-蕾奧妮(武力代表)', image:'https://ppt.cc/f2TImx@jpg', link:'', desc:'你如同蕾奧妮般擁有驚人的力量，可以使用這股力量壓制他人，達成目標。' },
+        演技: { title:'魅惑北方公爵-賽琳娜(演技代表)', image:'https://ppt.cc/faWI9x@jpg', link:'https://www.webtoons.com/zh-hant/western-palace/charming-the-duke-of-the-north/list?title_no=4815', desc:'你如同賽琳娜般演技過人，在他人面前劇本張嘴就來，可以說是靠著你的才貌雙全在宮中有著舉足輕重的地位。' },
+        搞笑: { title:'我奪走了公爵的初夜-雷普莉(搞笑代表)', image:'https://ppt.cc/fEb7Qx@jpg', link:'https://www.webtoons.com/zh-hant/western-palace/firstnight/list?title_no=2115', desc:'你如同雷普莉般直率且有趣，懂得利用你天生的幽默感去接近他人，讓他人放下戒心並成為你穿越後的支柱。' },
+        堅決: { title:'拯救被遺棄的本命角色-赫斯提雅(堅決代表)', image:'https://ppt.cc/fyfMRx@jpg', link:'https://www.webtoons.com/zh-hant/western-palace/for-my-derelict-favorite/list?title_no=4762', desc:'你如同赫斯提雅般擁有一顆堅定的心，無論發生了什麼情況都只想保護你最愛的人，但也請你也好好愛自己後再愛其他人，別讓自己受傷。' },
+        溫柔: { title:'以為只是普通的穿越-伊迪絲(溫柔代表)', image:'https://ppt.cc/fzvtRx@jpg', link:'https://www.webtoons.com/zh-hant/western-palace/not-your-typical-reincarnation-story/list?title_no=5574', desc:'你如同伊迪絲般有著溫柔待人的性格，雖然有時會躊躇不決，但也是因為這樣的個性，讓很多強勢的人產生了保護心理，成為你的支柱。' },
+        瘋度: { title:'因為是惡女所以很安逸-黛寶拉(瘋癲代表)', image:'https://ppt.cc/fyf1Xx@jpg', link:'', desc:'你如同黛寶拉般瘋狂，但卻總是智力在線，懂得在眾人面前瘋瘋癲癲的同時，一邊在腦袋裡面掌握局面，懂你的人會覺得很有魅力。' },
+        鈍感: { title:'基層公務員想晉升-娜美亞(鈍感代表)', image:'https://ppt.cc/fzpD1x@jpg', link:'', desc:'你如同娜美亞般情緒波瀾不大，但是腦海裡卻會暗暗計算各種事情，雖然有鈍感力這件事不會讓討厭你的人對你造成傷害，不過還是可以試試看感受一下周遭的氛圍也不錯！' }
+      };
+
+      const r = roles[topTrait] || roles['智力'];
+
+     let comicButtonHtml = '';
+      if (r.link) {
+          comicButtonHtml = `<a href=\"${r.link}\" target=\"_blank\" class=\"button ghost\">查看漫畫</a>`;
+      } else {
+          comicButtonHtml = `<button id=\"viewComicBtn\" class=\"ghost\">查看漫畫</button>`;
+      }
+
+      let html = `<div class=\"result\">`;
+      
+      html += `<div class="result-content">
+                  <div class="role-media">
+                      <img src="${r.image}" alt="${r.title} 圖片">
+                  </div>
+                  <div class="role-info">
+                      <h3 class="role-title">
+                        ${r.title} 
+                        <span style="font-size:0.75em; color:var(--accent-600); font-weight:normal; margin-left:8px;">
+                          (相似度 ${similarity}%)
+                        </span>
+                      </h3>
+                      <p class="role-desc">${r.desc}</p>
+                  </div>
+              </div>`;
+      
+      html += `<div class="btn-group">
+                  <button id=\"retry\">再測一次</button>
+                  <button id=\"shareBtn\">分享結果</button>
+                  ${comicButtonHtml} 
+                  <button id=\"detail\" class=\"ghost\">查看完整解讀</button>
+              </div>`;
+      html += `</div>`;
+
+      mainArea.innerHTML = html;
+      prog.style.width = `100%`;
+      qinfo.textContent = '測驗完成';
+      prevBtn.style.display = 'none'; 
+      nextBtn.style.display = 'none';
+
+      document.getElementById('retry').addEventListener('click', ()=>{
+        for(let k in traits) traits[k]=0;
+        for(let i=0;i<answers.length;i++) answers[i]=null;
+        current = 0;
+        nextBtn.style.display = '';
+        renderQuestion(current);
+      });
+
+      if (!r.link) {
+          const viewComicBtn = document.getElementById('viewComicBtn');
+          if (viewComicBtn) {
+            viewComicBtn.addEventListener('click', ()=>{
+                alert('此漫畫尚未在webtoon上架，請至網路上搜尋其他來源，提醒您，支持正版漫畫是給創作者最大的鼓勵。');
+            });
+          }
+      }
+
+      document.getElementById('shareBtn').addEventListener('click', ()=>{
+          const shareHtml = document.createElement('div');
+          shareHtml.style.position='fixed';
+          shareHtml.style.left=0;shareHtml.style.top=0;shareHtml.style.right=0;shareHtml.style.bottom=0;
+          shareHtml.style.display='flex';shareHtml.style.alignItems='center';shareHtml.style.justifyContent='center';
+          shareHtml.style.background='rgba(10,10,10,0.5)';
+          shareHtml.style.zIndex='1000';
+
+          const url = encodeURIComponent(window.location.href);
+          const title = encodeURIComponent(`我在韓國宮廷漫畫轉生測驗中，測出來的角色是：${r.title} (相似度${similarity}%)！快來玩玩看！`);
+
+          shareHtml.innerHTML = `
+            <div style="background:white;padding:24px;border-radius:12px;width:90%;max-width:320px;text-align:center;">
+              <h3 style="margin:0 0 16px;">分享測驗結果</h3>
+              <button class="share-action share-fb" id="btnFB">分享到 Facebook</button>
+              <button class="share-action share-line" id="btnLine">分享到 LINE</button>
+              <button class="share-action share-copy" id="btnCopy">複製連結</button>
+              <button id="closeShare" class="ghost" style="margin-top:12px;width:100%">取消</button>
+            </div>
+          `;
+
+          document.body.appendChild(shareHtml);
+
+          document.getElementById('btnFB').addEventListener('click', ()=>{
+              window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${title}`, '_blank');
+          });
+
+          document.getElementById('btnLine').addEventListener('click', ()=>{
+              window.open(`https://social-plugins.line.me/lineit/share?url=${url}&text=${title}`, '_blank');
+          });
+
+          document.getElementById('btnCopy').addEventListener('click', ()=>{
+              const textToCopy = `${decodeURIComponent(title)}\n${decodeURIComponent(url)}`;
+              if (navigator.clipboard) {
+                  navigator.clipboard.writeText(textToCopy).then(() => {
+                      alert('連結已複製到剪貼簿！');
+                      document.body.removeChild(shareHtml);
+                  }).catch(err => {
+                      alert('複製失敗，請手動複製網址');
+                  });
+              } else {
+                  // Fallback for older browsers
+                  const textArea = document.createElement("textarea");
+                  textArea.value = textToCopy;
+                  document.body.appendChild(textArea);
+                  textArea.select();
+                  document.execCommand("Copy");
+                  textArea.remove();
+                  alert('連結已複製到剪貼簿！');
+                  document.body.removeChild(shareHtml);
+              }
+          });
+
+          document.getElementById('closeShare').addEventListener('click', ()=>{ 
+              document.body.removeChild(shareHtml); 
+          });
+      });
+
+      document.getElementById('detail').addEventListener('click', ()=>{
+        const detailHtml = document.createElement('div');
+        detailHtml.style.position='fixed';
+        detailHtml.style.left=0;detailHtml.style.top=0;detailHtml.style.right=0;detailHtml.style.bottom=0;
+        detailHtml.style.display='flex';detailHtml.style.alignItems='center';detailHtml.style.justifyContent='center';
+        detailHtml.style.background='rgba(10,10,10,0.35)';
+        detailHtml.style.zIndex='1000';
+
+        let detailedContent = `<h3 style="margin:0 0 16px;">完整解讀</h3>`; 
+        
+        tiedTraits.forEach(trait => {
+            const tiedRole = roles[trait];
+            if (tiedRole) {
+                const isPrimary = trait === topTrait;
+                const titleColor = isPrimary ? 'var(--accent-600)' : 'var(--text)';
+                const titleText = isPrimary ? tiedRole.title + ' (主要結果)' : tiedRole.title;
+                
+                detailedContent += `<h4 style="margin:${isPrimary ? '0' : '16px'} 0 4px; border-bottom: 1px solid #eee; padding-bottom: 4px; color: ${titleColor};">${titleText}</h4>`;
+                detailedContent += `<p style="color:var(--muted); margin-top: 0;">${tiedRole.desc}</p>`;
+            }
+        });
+ 
+        detailedContent += `<div style="margin-top:20px;">你的屬性分數明細：</div>`;
+        detailedContent += `<ul style="color:var(--muted); margin-top: 4px; padding-left: 20px;">\n` +
+            Object.keys(traits).map(k=>`<li>${k}：${traits[k]}</li>`).join('\n') +
+            `</ul>
+            <div style="text-align:right;margin-top:12px"><button id="closeD">關閉</button></div>`;
+
+        detailHtml.innerHTML = `
+          <div style="background:white;padding:18px;border-radius:12px;max-width:720px;width:90%;max-height: 80vh; overflow-y: auto;">
+            ${detailedContent}
+          </div>
+        `;
+        
+        document.body.appendChild(detailHtml);
+        document.getElementById('closeD').addEventListener('click', ()=>{ document.body.removeChild(detailHtml); });
+      });
+    }
+
+    renderQuestion(current);
+
+    function createParticles() {
+    const particleCount = 40;
+    const body = document.body;
+
+    for (let i = 0; i < particleCount; i++) {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+
+      const size = Math.random() * 3 + 2;
+
+      const duration = Math.random() * 5 + 3;
+      const delay = Math.random() * 5;
+
+      p.style.left = `${x}vw`;
+      p.style.top = `${y}vh`;
+      p.style.width = `${size}px`;
+      p.style.height = `${size}px`;
+      p.style.animation = `float-glow ${duration}s ease-in-out ${delay}s infinite`;
+
+      body.appendChild(p);
+    }
+  }
+
+  createParticles();
+  </script>
+</body>
+</html>

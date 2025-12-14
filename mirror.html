@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>鏡中人格：探索你的另一面</title>
+    <meta name="description" content="透過心理測驗,揭示你潛藏的鏡像人格。基於榮格Shadow Self理論設計。">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 首頁 Intro Scene -->
+    <section id="intro-scene" class="scene active">
+        <div class="mirror-container">
+            <div class="mirror-frame">
+                <div class="mirror-surface">
+                    <div class="mirror-reflection"></div>
+                    <div class="mirror-shadow"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="intro-content">
+            <h1 class="title fade-in">鏡中人格</h1>
+            <p class="subtitle fade-in-delay-1">探索你的另一面</p>
+            <p class="description fade-in-delay-2">你真的認識自己嗎？</p>
+            <p class="description fade-in-delay-3">鏡中藏著你的另一面。</p>
+            <button class="btn-primary fade-in-delay-4" id="start-btn">開始照鏡</button>
+        </div>
+
+        <div class="particles"></div>
+    </section>
+
+    <!-- 測驗頁面 Question Scene -->
+    <section id="question-scene" class="scene">
+        <div class="question-mirror">
+            <div class="mirror-left">
+                <!-- 鏡中倒影效果 -->
+                <div class="mirror-reflection-container">
+                    <div class="mirror-silhouette">
+                        <div class="silhouette-glow"></div>
+                        <div class="silhouette-shadow"></div>
+                    </div>
+                </div>
+
+                <!-- 心靈小語區域 -->
+                <div class="quote-section">
+                    <div class="question-title" id="question-title"></div>
+                    <div class="question-quote" id="question-quote"></div>
+                </div>
+
+                <div class="mirror-effect"></div>
+            </div>
+        </div>
+
+        <div class="question-content">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+                <span class="progress-text">題目 <span id="current-q">1</span> / <span id="total-q">8</span></span>
+            </div>
+
+            <h2 class="question-text" id="question-text"></h2>
+
+            <div class="options-container" id="options-container">
+                <!-- Options will be dynamically inserted -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 結果頁面 Reveal Scene -->
+    <section id="result-scene" class="scene">
+        <div class="shatter-overlay"></div>
+
+        <div class="result-container">
+            <div class="result-symbol" id="result-symbol">
+                <!-- SVG symbol will be inserted here -->
+            </div>
+
+            <div class="result-content">
+                <h2 class="result-title" id="result-title"></h2>
+                <p class="result-keyword" id="result-keyword"></p>
+                <p class="result-description" id="result-description"></p>
+                <p class="result-shadow" id="result-shadow"></p>
+            </div>
+
+            <div class="result-actions">
+                <button class="btn-share" id="share-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                        <polyline points="16 6 12 2 8 6"></polyline>
+                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                    </svg>
+                    分享結果
+                </button>
+                <button class="btn-retry" id="retry-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                    </svg>
+                    再照一次鏡
+                </button>
+                <button class="btn-home" id="home-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    回到首頁
+                </button>
+            </div>
+        </div>
+
+        <div class="floating-particles"></div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

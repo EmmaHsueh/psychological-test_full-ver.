@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>後宮甄嬛傳 — 你是哪位娘娘？</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap');
+
+    :root {
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --accent: #8a2b2b;
+      --muted: #6b5a4a;
+      --gold: #d4af37;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: 'Noto Sans TC', 'Noto Serif TC', system-ui, -apple-system, 'Segoe UI', Roboto;
+      background:
+        linear-gradient(rgba(243, 235, 227, 0.8), rgba(243, 235, 227, 0.8)),
+        url('/images_fight/123.jpg') center/cover no-repeat fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2b2b2b;
+      position: relative;
+    }
+
+    .wrap {
+      width: 980px;
+      max-width: 96%;
+      background: var(--card-bg);
+      border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      border: 1px solid rgba(138, 43, 43, 0.08);
+      position: relative;
+    }
+
+    header {
+      padding: 22px 28px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      background: linear-gradient(90deg, rgba(138, 43, 43, 0.04), transparent);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      color: var(--accent);
+      letter-spacing: 1px
+    }
+
+    .container {
+      padding: 28px
+    }
+
+    .step {
+      display: none
+    }
+
+    .step.active {
+      display: block
+    }
+
+    .question-box {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: left
+    }
+
+    .q-image {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      display: block;
+      margin-bottom: 18px
+    }
+
+    .question {
+      font-weight: 700;
+      margin-bottom: 12px;
+      font-size: 18px;
+      color: #3b2b2b
+    }
+
+    .opts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    button.opt {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 2px solid rgba(85, 50, 30, 0.9);
+      background:
+        linear-gradient(180deg, rgba(255, 248, 235, 0.95), rgba(245, 233, 214, 0.95)),
+        url('/images_fight/wood-texture.jpg') center/cover;
+      background-blend-mode: overlay;
+      color: #3b1f0f;
+      cursor: pointer;
+      text-align: left;
+      transition: transform .14s ease, box-shadow .14s ease, filter .12s ease;
+      box-shadow: 0 8px 0 rgba(42, 21, 10, 0.9), 0 6px 18px rgba(0, 0, 0, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button.opt:active {
+      transform: translateY(4px) scale(0.99);
+      box-shadow: 0 3px 0 rgba(42, 21, 10, 0.9), 0 4px 10px rgba(0, 0, 0, 0.10);
+    }
+
+    button.opt:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2), 0 0 18px rgba(212, 175, 55, 0.18);
+      filter: brightness(1.06);
+    }
+
+    button.opt::after {
+      content: '';
+      position: absolute;
+      left: -40%;
+      top: 0;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
+      transform: skewX(-20deg);
+      transition: left .45s ease;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    button.opt:hover::after {
+      left: 120%;
+    }
+
+    button.opt strong {
+      display: block;
+      color: var(--accent);
+      font-size: 15px;
+      margin-bottom: 6px
+    }
+
+    button.opt .small {
+      font-size: 13px;
+      color: #5a4638
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px
+    }
+
+    .muted {
+      color: var(--muted)
+    }
+
+    .result {
+      padding: 28px;
+      text-align: center
+    }
+
+    .result img {
+      max-width: 320px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12)
+    }
+
+    .score {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 10px
+    }
+
+    .small {
+      font-size: 13px;
+      color: #666
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 2px solid #6b4428;
+      background: linear-gradient(180deg, #b88a56, #8a5b30);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 6px 0 rgba(42, 21, 10, 0.8)
+    }
+
+    .btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 3px 0 rgba(42, 21, 10, 0.8)
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      box-shadow: none
+    }
+
+    .result-flex {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap
+    }
+
+    .result-left {
+      flex: 0 0 340px;
+      text-align: center
+    }
+
+    .result-right {
+      flex: 1;
+      min-width: 220px;
+      text-align: left
+    }
+
+    .result-right h3 {
+      margin-top: 0;
+      color: var(--accent)
+    }
+
+    .quote {
+      margin-top: 12px;
+      font-style: italic;
+      color: #5a3d1e
+    }
+
+    .result-frame {
+      border: 4px solid var(--gold);
+      border-radius: 14px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(255, 250, 240, 0.95), rgba(255, 248, 230, 0.9));
+      box-shadow: 0 12px 30px rgba(212, 175, 55, 0.08);
+    }
+
+    /* 進度條 */
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #eee;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .progress-bar-inner {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d4af37, #ffdd55);
+      transition: width 0.3s ease;
+    }
+
+    /* 左下角離開測驗 */
+    #exitBtn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 12px 18px;
+      background: linear-gradient(145deg, #d4af37, #b8860b);
+      border: 2px solid #8a5b30;
+      border-radius: 14px;
+      box-shadow: 0 6px 0 #8a5b30;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    /* 響應式 */
+    @media (max-width:900px) {
+      .opts {
+        grid-template-columns: 1fr
+      }
+
+      .q-image {
+        height: 220px
+      }
+
+      .result-flex {
+        flex-direction: column
+      }
+
+      .result-left {
+        flex-basis: 100%
+      }
+
+      .result-right {
+        flex-basis: 100%
+      }
+
+      body {
+        padding: 16px
+      }
+    }
+
+    @media (max-width:900px) {
+      #resultArea img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <h1>後宮甄嬛傳 — 你是哪位娘娘？</h1>
+    </header>
+
+    <div class="container">
+      <div class="step active" id="step0">
+        <h2>先選你預測自己會是誰（選一項）</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px">
+          <label style="flex:1 1 30%"><input type="radio" name="guess" value="華妃" checked> 華妃</br>（強勢）</label>
+          <label style="flex:1 1 30%"><input type="radio" name="guess" value="安陵容"> 安陵容</br>（心機細膩）</label>
+          <label style="flex:1 1 30%"><input type="radio" name="guess" value="甄嬛"> 甄嬛</br>（柔中帶剛）</label>
+          <label style="flex:1 1 30%"><input type="radio" name="guess" value="沈眉莊"> 沈眉莊</br>（穩重高雅）</label>
+          <label style="flex:1 1 30%"><input type="radio" name="guess" value="皇后"> 皇后</br>（深藏不露）</label>
+          <label style="flex:1 1 30%"><input type="radio" name="guess" value="淳兒"> 淳兒</br>（天真單純）</label>
+        </div>
+        <div style="margin-top:18px">
+          <button id="startBtn" class="btn">開始測驗</button>
+        </div>
+      </div>
+
+      <div class="step" id="questionStep">
+        <div class="progress-bar">
+          <div class="progress-bar-inner" id="progress"></div>
+        </div>
+        <div class="question-box">
+          <img id="qImage" class="q-image" src="/images_fight/01.jpg" alt="題目圖片">
+          <div class="question" id="qText">題目文字</div>
+          <div class="opts" id="options"></div>
+
+          <footer>
+            <div class="muted"><span id="qIndex">1</span>/10</div>
+            <div>
+              <button id="prevBtn" class="btn ghost" style="display:none">上一步</button>
+            </div>
+          </footer>
+        </div>
+      </div>
+
+      <div class="step" id="resultStep">
+        <div id="resultArea" class="result-frame"></div>
+      </div>
+    </div>
+  </div>
+
+  <button id="exitBtn" onclick="window.open('https://psychological-test-full-ver.onrender.com', '_blank')">
+    回首頁
+  </button>
+
+  <script>
+    const questions = [
+      { text: `第 1 題：初入宮中，你會選擇哪種打扮進宮？`, img: /images_fight/01.jpg, opts: [" 清雅素色，低調不鋪張", " 雍容華貴，讓人一眼記住", " 古靈精怪，帶點個性", " 穩妥端莊、符合規矩"] },
+      { text: `第 2 題：皇帝第一眼看到你，你希望他怎麼說？`, img: /images_fight/02.jpg, opts: [" 「溫婉如水。」", " 「嬌俏可愛。」", " 「聰慧伶俐。」", " 「端正大方。」"] },
+      { text: `第 3 題：入宮第一個晚上，你會？`, img: /images_fight/03.jpg, opts: [" 謹慎觀察，不急著與人交好", " 主動結交姐妹，廣結善緣", " 悄悄打聽宮中勢力分布", " 認真讀宮規，不犯錯最重要"] },
+      { text: `第 4 題：皇后娘娘召見你，你會如何回應？`, img: /images_fight/04.jpg, opts: [" 小心翼翼、不卑不亢", " 撒撒嬌，希望讓她喜歡", " 精準察言觀色，說她想聽的話", " 恭敬守規矩，完全按宮禮行事"] },
+      { text: `第 5 題：嬪妃之間傳出你與皇帝關係好，你會？`, img: /images_fight/05.jpg, opts: [" 低調處理，不給人把柄", " 趁機增加 favor，讓皇帝更寵你", " 反向操作，讓敵人摸不著狀況", " 說是謠言，保持形象乾淨"] },
+      { text: `第 6 題：宮女不小心把你惹怒，你會？`, img: /images_fight/06.jpg, opts: [" 忍下，觀察是否有人在背後設計", " 直接責罰", " 表面原諒，內心記住", " 和平提醒"], death: { optionIndex: 1, type: 'certain', message: '宮女是華妃心腹，你責罰她＝得罪華妃。被打入冷宮，最終病死。進入宮中就要步步為營，一個行差踏錯，你就會被害死，你毫無心機，無法存活於后宮，宮鬥指數為0%', image: /images_fight/q1.jpg } },
+      { text: `第 7 題：有人在散播不利你的流言，你會？`, img: /images_fight/07.jpg, opts: [" 找源頭，查清楚", " 立刻反擊", " 用計讓對方露餡", " 等皇上心情好再解釋"] },
+      { text: `第 8 題：有人送你香囊，你會？`, img: /images_fight/08.jpg, opts: [" 先給宮女試", " 直接收下", " 拆開查看", " 拿去給太醫檢查"], death: { optionIndex: 1, type: 'certain', message: '香囊含麝香，你中招，當場暈倒死亡。進入宮中就要步步為營，一個行差踏錯，你就會被害死，你毫無心機，無法存活於后宮，宮鬥指數為0%', image: '/images_fight/q2.jpg' } },
+      { text: `第 9 題：皇后與華妃同時召你，你只能去一個。`, img: /images_fight/09.jpg, opts: [" 去皇后那邊", " 去華妃那邊", " 裝病", " 說自己在陪皇上"], death: [{ optionIndex: 2, type: 'chance', chance: 0.5, message: '太醫揭穿你假病，兩面得罪，雪地跪整夜凍死。進入宮中就要步步為營，一個行差踏錯，你就會被害死，你毫無心機，無法存活於后宮，宮鬥指數為0%', image: /images_fight/q3.jpg }, { optionIndex: 3, type: 'certain', message: '兩邊都得罪 → 被打入冷宮 → 死亡。進入宮中就要步步為營，一個行差踏錯，你就會被害死，你毫無心機，無法存活於后宮，宮鬥指數為0%', image: /images_fight/q4.jpg }] },
+      { text: `第10題：你得寵時皇帝生病了，你會？`, img: /images_fight/10.jpg, opts: [" 真心照料", " 把握時機鞏固地位", " 安排自己的人接近太醫署", " 表面照顧、保持距離"] }
+    ];
+
+    const scoreMap = {
+      1: [["B"], ["A", "C"], ["F"], ["D", "E"]],
+      2: [["D", "E"], ["F", "A"], ["B"], ["C"]],
+      3: [["B"], ["F"], ["A", "C"], ["D", "E"]],
+      4: [["D"], ["A", "F"], ["B"], ["C", "E"]],
+      5: [["C"], ["A", "F"], ["B"], ["D", "E"]],
+      6: [["C", "E"], [], ["A", "D"], ["B", "F"]],
+      7: [["B"], ["A"], ["C", "D"], ["E", "F"]],
+      8: [["A", "F"], [], ["C", "D"], ["B", "E"]],
+      9: [["C", "D", "F"], ["A", "B", "E"], [], []],
+      10: [["A", "F"], ["C", "D"], ["B"], ["E"]]
+    };
+
+    let score = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
+
+    /* MODIFICATION START: 增加 combatIndex (宮鬥指數) */
+    const combatIndices = {
+      '華妃': '70%',
+      '甄嬛': '100%',
+      '皇后': '90%',
+      '安陵容': '60%',
+      '沈眉莊': '50%',
+      '淳兒': '20%'
+    };
+
+    const resultAssets = {
+      '華妃': { img: /images_fight/0.jpg , desc: '你個性強勢、果敢，遇事敢做敢當。你的存在像一道烈火，能迅速壓制對手，但也因脾氣與情緒而容易招惹敵意。', quote: '「賤人就是矯情！」 — 華妃' },
+      '甄嬛': { img: /images_fight/1.jpg, desc: '你溫婉而不軟弱，善於觀察與等待時機。表面溫柔，實則有謀略，能在波濤中守住自己想要的那片寧靜。', quote: '「再冷，也不該拿別人的血來暖自己。」 — 甄嬛' },
+      '皇后': { img: /images_fight/2.jpg, desc: '你沉穩老練，深藏不露。擅長佈局與掌控全局，表面平靜，實際心思縝密，是後宮的無形掌舵者。', quote: '「不偏愛，懂節制，方得長久。」 — 皇后' },
+      '安陵容': { img: /images_fight/3.jpg, desc: '你看似柔弱卻心思細膩，擅長在細節中布下機關。你的步步為營，有時沉默比言語更有殺傷力。', quote: '「在宮中待久了，苦杏仁吃著也是甜的。」 — 安陵容' },
+      '沈眉莊': { img: /images_fight/4.jpg, desc: '你氣質高雅、內斂穩重，待人溫和但堅定。雖不以權謀制勝，卻能靠人格與風範贏得長久的信任。', quote: '「寧可枝頭抱香死，不曾吹落北風中。」 — 沈眉莊' },
+      '淳兒': { img: /images_fight/5.jpg, desc: '你純真無邪，心地善良。在泠泠宮鬥的世界裡，你像一縷清風，雖易受傷卻也最讓人心疼。', quote: '「我還是比較喜歡姐姐這裡的點心」 — 淳兒' }
+    };
+    /* MODIFICATION END */
+
+    let cur = 0;
+    let answers = Array(questions.length).fill(null);
+    let guessed = '華妃';
+
+    const step0 = document.getElementById('step0');
+    const qStep = document.getElementById('questionStep');
+    const resStep = document.getElementById('resultStep');
+    const qText = document.getElementById('qText');
+    const qImage = document.getElementById('qImage');
+    const options = document.getElementById('options');
+    const qIndex = document.getElementById('qIndex');
+    const startBtn = document.getElementById('startBtn');
+    const progressBar = document.getElementById('progress');
+
+    startBtn.addEventListener('click', () => {
+      const radios = document.getElementsByName('guess');
+      for (const r of radios) if (r.checked) guessed = r.value;
+      step0.classList.remove('active');
+      qStep.classList.add('active');
+      renderQuestion();
+    });
+
+    function renderQuestion() {
+      const q = questions[cur];
+      qText.textContent = q.text;
+      qImage.src = q.img;
+      qIndex.textContent = `${cur + 1}`;
+      progressBar.style.width = `${((cur) / questions.length) * 100}%`;
+      options.innerHTML = '';
+      (q.opts || []).forEach((optText, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = `<strong>${optText}</strong>`;
+        btn.addEventListener('click', () => selectOption(i));
+        options.appendChild(btn);
+      });
+    }
+
+    function selectOption(i) {
+      answers[cur] = i;
+      const q = questions[cur];
+
+      if (q.death && q.death.optionIndex === i) {
+        showDeath(q.death.message, q.death.image);
+        return;
+      }
+      if (Array.isArray(q.death)) {
+        const matched = q.death.find(d => d.optionIndex === i);
+        if (matched) {
+          if (matched.type === 'certain') {
+            showDeath(matched.message, matched.image);
+            return;
+          } else if (matched.type === 'chance') {
+            if (Math.random() < matched.chance) {
+              showDeath(matched.message + `（抽籤命運：你抽到不幸）`, matched.image);
+              return;
+            } else { alert('你僥倖逃過一劫，繼續答題。'); }
+          }
+        }
+      }
+
+      if (cur < questions.length - 1) {
+        cur++;
+        renderQuestion();
+      } else {
+        computeResult();
+      }
+    }
+
+    function showDeath(msg, img) {
+      qStep.classList.remove('active');
+      resStep.classList.add('active');
+      const area = document.getElementById('resultArea');
+      area.innerHTML = `
+      <h2>你已遭遇不幸 —— 死亡</h2>
+      <p class="small">${msg}</p>
+      <div style="margin-top:16px"><img src="${img || 'q-death.jpg'}" alt="死亡" style="max-width:360px;border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,0.18)"></div>
+      <div class="meta" style="margin-top:18px">
+        <button class="btn" onclick="location.reload()">重新開始</button>
+      </div>
+    `;
+    }
+
+    function computeResult() {
+
+      /* 依照你的 scoreMap 累積分數 */
+      answers.forEach((ans, idx) => {
+        if (ans == null) return;
+        const plusList = scoreMap[idx + 1][ans];
+        plusList.forEach(k => score[k]++);
+      });
+
+      /* 比較 A~F 分數 → 同分依 A>B>C>D>E>F */
+      const order = ["A", "B", "C", "D", "E", "F"];
+      let winner = order[0];
+
+      order.forEach(role => {
+        if (score[role] > score[winner]) winner = role;
+      });
+
+      /* A B C D E F → 角色名 */
+      const roleName = {
+        A: "華妃",
+        B: "甄嬛",
+        C: "皇后",
+        D: "安陵容",
+        E: "沈眉莊",
+        F: "淳兒"
+      }[winner];
+
+      const data = resultAssets[roleName] || { img: /images_fight/5.jpg, desc: '你性情難以歸類，獨具一格。', quote: '' };
+
+      /* MODIFICATION START: 獲取並格式化宮鬥指數 */
+      const actualCombatIndex = combatIndices[roleName] || '??%';
+      const guessedCombatIndex = combatIndices[guessed] || '??%';
+
+      const guessedText = guessed ? `<p class="small">你一開始預測自己會是：<strong>${guessed}  宮鬥指數 : ${guessedCombatIndex}</strong></p>` : '';
+      /* MODIFICATION END */
+
+      qStep.classList.remove('active');
+      resStep.classList.add('active');
+
+      const area = document.getElementById('resultArea');
+      /* MODIFICATION START: 修改結果標題，加入宮鬥指數 */
+      area.innerHTML = `
+      <div class="result-flex">
+        <div class="result-left">
+          <img src="${data.img}" alt="${roleName}" style="width:100%;max-width:320px;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,0.18)">
+        </div>
+        <div class="result-right">
+          <h3>結果：你像是 —— ${roleName}   宮鬥指數 : ${actualCombatIndex}</h3>
+          ${guessedText}
+          <p>${data.desc}</p>
+          <p class="quote">${data.quote}</p>
+
+          <div style="margin-top:18px">
+            <button class="btn" onclick="location.reload()">重新開始</button>
+            <img src="/images_fight/fb.jpg" alt="FB分享" style="width:48px;height:48px;margin-left:6px;cursor:pointer"
+              onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'_blank')">
+
+            <img src="/images_fight/line.jpg" alt="LINE分享" style="width:48px;height:48px;margin-left:6px;cursor:pointer"
+              onclick="window.open('https://line.me/R/msg/text/?'+encodeURIComponent(location.href),'_blank')">
+
+            <img src="/images_fight/ig.jpg" alt="IG分享" style="width:48px;height:48px;margin-left:6px;cursor:pointer"
+              onclick="alert('Instagram 分享需手動上傳圖片或連結')">
+          </div>
+        </div>
+      </div>`;
+      /* MODIFICATION END */
+    }
+  </script>
+</body>
+
+</html>
