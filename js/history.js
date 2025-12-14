@@ -115,10 +115,13 @@ export function clearHistory() {
  * 顯示歷史記錄頁面
  */
 export function showHistory() {
-  const selectionPage = document.getElementById('selection-page');
-  const historyPage = document.getElementById('history-page');
+  // 隱藏所有頁面
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+  });
 
-  if (selectionPage) selectionPage.classList.remove('active');
+  // 顯示歷史記錄頁面
+  const historyPage = document.getElementById('history-page');
   if (historyPage) historyPage.classList.add('active');
 
   loadHistoryPage();
@@ -128,9 +131,12 @@ export function showHistory() {
  * 返回測驗選擇頁面
  */
 export function backToSelection() {
-  const historyPage = document.getElementById('history-page');
-  const selectionPage = document.getElementById('selection-page');
+  // 隱藏所有頁面
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+  });
 
-  if (historyPage) historyPage.classList.remove('active');
+  // 顯示測驗選擇頁面
+  const selectionPage = document.getElementById('selection-page');
   if (selectionPage) selectionPage.classList.add('active');
 }

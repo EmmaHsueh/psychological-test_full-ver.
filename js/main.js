@@ -58,10 +58,17 @@ function showDisclaimer() {
 function startTests() {
   const homePage = document.getElementById('home-page');
   const modal = document.getElementById('disclaimer-modal');
-  const selectionPage = document.getElementById('selection-page');
 
+  // 隱藏主頁和彈窗
   if (homePage) homePage.classList.remove('active');
   if (modal) modal.classList.remove('active');
+
+  // 隱藏所有頁面，然後顯示測驗選擇頁
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+  });
+
+  const selectionPage = document.getElementById('selection-page');
   if (selectionPage) selectionPage.classList.add('active');
 }
 
