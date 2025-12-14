@@ -42,18 +42,16 @@
 
   <!-- 測驗選擇區 -->
   <div id="selection-page" class="page gradient-bg">
-    <div class="top-nav-buttons">
-      <button class="nav-btn recommendation-btn" onclick="showRecommendation()">
-        <img src="icons/trending-up.svg" alt="recommendation icon" class="icon"> 為你推薦
-      </button>
-      <button class="nav-btn history-btn" onclick="showHistory()">
-        <img src="icons/chart.svg" alt="chart icon" class="icon"> 歷史記錄
-      </button>
-    </div>
+    <button class="history-btn" onclick="showHistory()">
+      <img src="icons/chart.svg" alt="chart icon" class="icon"> 歷史記錄
+    </button>
     <h1>選擇你的測驗</h1>
     <div class="test-gallery" id="test-gallery">
       <!-- 測驗卡片會由 JavaScript 動態生成 -->
     </div>
+    <button class="recommendation-btn-bottom" onclick="showRecommendation()">
+      <img src="icons/trending-up.svg" alt="recommendation icon" class="icon"> 探索更多推薦測驗
+    </button>
   </div>
 
   <!-- 推薦測驗頁面 -->
