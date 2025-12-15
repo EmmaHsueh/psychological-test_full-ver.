@@ -313,6 +313,122 @@
       justify-content: center;
       height: 100%; 
     }
+
+    #introScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg); 
+      background-image: linear-gradient(180deg, #2d1b4e 0%, #1a0b2e 100%);
+      z-index: 2000; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      transition: opacity 0.5s ease;
+    }
+
+.intro-content {
+  max-width: 500px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  padding: 40px 30px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  animation: float-up 1s ease-out;
+}
+
+.intro-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  margin: 0 auto 20px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(154,123,255,0.4);
+}
+.intro-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+#introScreen h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: var(--accent);
+  text-shadow: 0 0 10px rgba(191, 165, 255, 0.5);
+}
+
+.story-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 32px;
+}
+
+/* 穿越按鈕特效 */
+.pulse-btn {
+  background: linear-gradient(135deg, var(--accent), var(--accent-600));
+  color: white;
+  border: none;
+  padding: 12px 36px;
+  font-size: 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(154, 123, 255, 0.6);
+  transition: transform 0.2s;
+  animation: pulse 2s infinite;
+}
+.pulse-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(154, 123, 255, 0.8);
+}
+
+/* 白屏轉場層 */
+#flashLayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: 3000; /* 最高層級 */
+  opacity: 0;
+  pointer-events: none; /* 預設不擋滑鼠 */
+}
+
+/* 觸發白屏動畫 class */
+.flash-active {
+  animation: flash-animation 2.5s forwards;
+}
+
+/* 動畫定義 */
+@keyframes float-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(154, 123, 255, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(154, 123, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(154, 123, 255, 0); }
+}
+
+@keyframes flash-animation {
+  0% { opacity: 0; }
+  30% { opacity: 1; } /* 變全白 */
+  70% { opacity: 1; } /* 停留一下 */
+  100% { opacity: 0; visibility: hidden; } /* 淡出並隱藏 */
+}
+
+
+/* 手機版適配 */
+@media(max-width: 640px) {
+  .intro-content { padding: 30px 20px; }
+  #introScreen h2 { font-size: 24px; }
+  .story-text { font-size: 15px; }
+}
   </style>
 </head>
 <body>
@@ -320,11 +436,29 @@
   <svg viewBox="0 0 24 24">
     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
     </svg>
-  心得回饋&回到首頁
+  回首頁
   </a>
+    
+  <div id="flashLayer"></div>
+
+  <div id="introScreen">
+    <div class="intro-content">
+      <h2>命運的召喚...</h2>
+      <p class="story-text">
+        現實生活的疲憊讓你感到窒息。<br>
+        好不容易回到家中休息，<br>
+        突然間，你發現到書桌上放著一本從沒看過的漫畫。<br>
+        翻閱了幾頁，書頁卻發出了耀眼的光芒...<br>
+        <br>
+        既定的命運正在改寫，<br>
+        你，準備好迎接新的人生了嗎？
+      </p>
+      <button id="startJourneyBtn" class="pulse-btn">穿越</button>
+    </div>
+  </div>
   <div class="wrap" role="application">
     <header>
-      <div class="logo"><img src="images/logo_img.jpg" alt="Logo"></div>
+      <div class="logo"><img src="https://ppt.cc/fvDPtx@jpg" alt="Logo"></div>
 
       <div>
         <h1>韓國宮廷漫畫轉生測驗</h1>
@@ -357,7 +491,7 @@
   <script>
     const questions = [
         { 
-          text: "在測驗開始前，憑直覺猜猜看你覺得自己會是哪一種角色？",
+          text: "在正式穿越前，憑直覺猜猜看你覺得自己會是哪一種角色？",
           options: [
             { text: "佩妮洛普(智力代表)", points: {} },
             { text: "蕾奧妮(武力代表)", points: {} },
@@ -772,6 +906,23 @@
   }
 
   createParticles();
+
+  const introScreen = document.getElementById('introScreen');
+  const startJourneyBtn = document.getElementById('startJourneyBtn');
+  const flashLayer = document.getElementById('flashLayer');
+
+  startJourneyBtn.addEventListener('click', () => {
+
+      flashLayer.classList.add('flash-active');
+
+      setTimeout(() => {
+          introScreen.style.display = 'none';
+      }, 800);
+
+      setTimeout(() => {
+          flashLayer.classList.remove('flash-active');
+      }, 2500);
+  });
   </script>
 </body>
 </html>
